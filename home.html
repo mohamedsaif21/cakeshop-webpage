@@ -403,6 +403,70 @@
             color: var(--chocolate);
         }
 
+        /* Menu table styles to match site cards */
+        .menu-table-wrapper {
+            background: var(--cream);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(74,46,43,0.08);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: inherit;
+        }
+
+        .menu-table thead th {
+            text-align: left;
+            padding: 1rem 1.25rem;
+            font-size: 1.1rem;
+            color: var(--chocolate);
+            background: transparent;
+            border-bottom: 2px solid rgba(166,94,63,0.08);
+        }
+
+        .menu-table tbody td {
+            padding: 1rem 1.25rem;
+            color: var(--caramel);
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(166,94,63,0.04);
+        }
+
+        .menu-table tbody tr:nth-child(even) td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .menu-table tbody td:nth-child(2),
+        .menu-table tbody td:nth-child(3) {
+            text-align: center;
+            color: var(--chocolate);
+            font-weight: 700;
+        }
+
+        /* Responsive: stack rows on small screens */
+        @media (max-width: 600px) {
+            .menu-table thead { display: none; }
+            .menu-table tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                background: var(--white);
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(74,46,43,0.06);
+                overflow: hidden;
+            }
+            .menu-table tbody td {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.75rem 1rem;
+                border-bottom: none;
+            }
+            .menu-table tbody td::before { content: none; }
+            .menu-table tbody td:nth-child(1) { font-weight: 700; color: var(--chocolate); }
+        }
+
         /* Testimonials */
         .testimonials {
             background: var(--cream);
@@ -494,6 +558,24 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
+        }
+
+        /* Constrain contact content and center the form on the page */
+        .contact .contact-content {
+            max-width: 760px;
+            width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            justify-items: center;
+            align-items: start;
+            padding-top: 1rem;
+        }
+
+        .contact-form {
+            max-width: 640px;
+            width: 100%;
         }
 
         .contact-form {
@@ -706,7 +788,7 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="#" class="logo">Shafa's Dessert house</a>
+            <a href="#" class="logo">Shafa' Dessert house</a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -745,7 +827,7 @@
     <!-- Floating Slider -->
     <div class="floating-slider">
         <div class="slider-container">
-            <div class="slider-item"><img src="assest/Menu%20Highlights/12 Amazing Brownies That Will Make You Drool.jpeg" alt="Amazing Brownies" loading="lazy"></div>
+            <div class="slider-item"><img src="assest/Menu Highlights/12 Amazing Brownies That Will Make You Drool.jpeg" alt="Amazing Brownies" loading="lazy"></div>
             <div class="slider-item"><img src="assest/Menu%20Highlights/Bombshell Oreo Brownies.jpeg" alt="Bombshell Oreo Brownies" loading="lazy"></div>
             <div class="slider-item"><img src="assest/Menu%20Highlights/Haole Brownies AKA Blonde Brownies.jpeg" alt="Haole Blonde Brownies" loading="lazy"></div>
             <div class="slider-item"><img src="assest/Menu%20Highlights/Red Velvet Cake.jpeg" alt="Red Velvet Cake" loading="lazy"></div>
@@ -761,12 +843,13 @@
         <div class="container">
             <h2 class="section-title fade-in">About Our Bakery</h2>
             <div class="about-content">
-                <div class="about-image fade-in"><img src="assest/img/Untitled%20design%20(4).png" alt="Our bakery" loading="lazy"></div>
+                <div class="about-image fade-in"><img src="assest/img/shafa desert.png" alt="Our bakery" loading="lazy"></div>
                 <div class="about-text fade-in">
-                    <h3>Crafting Sweet Memories Since 1995</h3>
-                    <p>Welcome to Delicious Delights, where every creation tells a story of passion, tradition, and exceptional taste. Our master bakers combine time-honored techniques with premium ingredients to create unforgettable experiences.</p>
-                    <p>From our signature brownies to artisanal cakes, each product is handcrafted with meticulous attention to detail. We believe that great baking is an art form, and every bite should be a celebration of flavor.</p>
-                    <p>Visit us and discover why we've been the community's favorite bakery for over two decades.</p>
+                    <h3>Crafting Sweet Moments at Home</h3>
+<p>Welcome to Delicious Delights Home Bakery, where every treat is made with love, warmth, and a passion for homemade goodness. Each creation reflects the comfort and joy of true home-style baking.</p>
+<p>From our fudgy brownies to soft artisanal cakes, every item is freshly prepared in our home kitchen using quality ingredients and heartfelt recipes. Every bite is crafted with care and attention to detail.</p>
+<p>Experience the freshness, flavor, and personal touch that make our home bakery a favorite choice for those who love authentic, handcrafted delights.</p>
+
                 </div>
             </div>
         </div>
@@ -774,77 +857,148 @@
 
     <!-- Menu Section -->
     <section id="menu" class="menu">
-        <div class="container">
-            <h2 class="section-title fade-in">Menu Highlights</h2>
-            <div class="menu-grid">
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/12 Amazing Brownies That Will Make You Drool.jpeg" alt="Amazing Brownies"></div>
-                    <h4>Amazing Brownies</h4>
-                    <p>12 varieties of rich, fudgy brownies that will make you drool.</p>
-                    <div class="price">₹1,078</div>
+    <div class="container">
+        <h2 class="section-title fade-in">Menu Highlights</h2>
+        <div class="menu-grid">
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/12 Amazing Brownies That Will Make You Drool.jpeg" alt="12 Amazing Brownies" loading="lazy">
                 </div>
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Bombshell Oreo Brownies.jpeg" alt="Bombshell Oreo Brownies"></div>
-                    <h4>Bombshell Oreo Brownies</h4>
-                    <p>Oreo-studded brownies with extra crunch and cream.</p>
-                    <div class="price">₹1,161</div>
-                </div>
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Haole Brownies AKA Blonde Brownies.jpeg" alt="Haole Blonde Brownies"></div>
-                    <h4>Haole (Blonde) Brownies</h4>
-                    <p>Buttery blondies with caramel notes and toasted nuts.</p>
-                    <div class="price">₹995</div>
-                </div>
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Red Velvet Cake.jpeg" alt="Red Velvet Cake"></div>
-                    <h4>Red Velvet Cake</h4>
-                    <p>Classic red velvet with cream cheese frosting.</p>
-                    <div class="price">₹2,074</div>
-                </div>
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Soft and Gooey Nutella Brownies - Strawberry in the Desert.jpeg" alt="Nutella Brownies"></div>
-                    <h4>Nutella Brownies</h4>
-                    <p>Soft, gooey Nutella brownies — a hazelnut-chocolate dream.</p>
-                    <div class="price">₹1,244</div>
-                </div>
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/The Best Brownies Ever.jpeg" alt="The Best Brownies Ever"></div>
-                    <h4>The Best Brownies</h4>
-                    <p>Our signature brownie — fudgy center with a crackly top.</p>
-                    <div class="price">₹1,078</div>
-                </div>
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Tin Can Chocolate Dream Cake Filipino Recipe.jpeg" alt="Tin Can Chocolate Dream Cake"></div>
-                    <h4>Tin Can Chocolate Dream Cake</h4>
-                    <p>A Filipino-inspired chocolate cake with rich layers.</p>
-                    <div class="price">₹2,489</div>
-                </div>
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Ultimate Triple Layer Brownies Recipe.jpeg" alt="Ultimate Triple Layer Brownies"></div>
-                    <h4>Ultimate Triple Layer Brownies</h4>
-                    <p>Three layers of chocolatey goodness for chocoholics.</p>
-                    <div class="price">₹1,410</div>
-                </div>
-                <div class="menu-card fade-in">
-                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/White Forest Cake.jpeg" alt="White Forest Cake"></div>
-                    <h4>White Forest Cake</h4>
-                    <p>Light and elegant cake with white chocolate and cherries.</p>
-                    <div class="price">₹2,323</div>
-                </div>
+                <h4>12 Amazing Brownies</h4>
+                <p>A sampler box with 12 irresistible brownie flavors.</p>
+                <div class="price">₹999 / box</div>
             </div>
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/Bombshell Oreo Brownies.jpeg" alt="Bombshell Oreo Brownies" loading="lazy">
+                </div>
+                <h4>Bombshell Oreo Brownies</h4>
+                <p>Oreo-studded brownies with crunchy cookie pieces.</p>
+                
+            </div>
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/Haole Brownies AKA Blonde Brownies.jpeg" alt="Haole Blonde Brownies" loading="lazy">
+                </div>
+                <h4>Haole (Blonde) Brownies</h4>
+                <p>Buttery blondies with caramel notes and toasted nuts.</p>
+                
+            </div>
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/Red Velvet Cake.jpeg" alt="Red Velvet Cake" loading="lazy">
+                </div>
+                <h4>Red Velvet Cake</h4>
+                <p>Classic red velvet with cream cheese frosting (slice).</p>
+                
+            </div>
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/Soft and Gooey Nutella Brownies - Strawberry in the Desert.jpeg" alt="Nutella Brownies" loading="lazy">
+                </div>
+                <h4>Nutella Brownies</h4>
+                <p>Soft, gooey Nutella brownies — a hazelnut-chocolate dream.</p>
+               
+            </div>
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/The Best Brownies Ever.jpeg" alt="The Best Brownies Ever" loading="lazy">
+                </div>
+                <h4>The Best Brownies</h4>
+                <p>Our signature brownie — fudgy center with a crackly top.</p>
+                
+            </div>
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/Tin Can Chocolate Dream Cake Filipino Recipe.jpeg" alt="Tin Can Chocolate Dream Cake" loading="lazy">
+                </div>
+                <h4>Tin Can Chocolate Dream Cake</h4>
+                <p>A Filipino-inspired chocolate cake with rich layers.</p>
+                
+            </div>
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/Ultimate Triple Layer Brownies Recipe.jpeg" alt="Ultimate Triple Layer Brownies" loading="lazy">
+                </div>
+                <h4>Ultimate Triple Layer Brownies</h4>
+                <p>Three layers of chocolatey goodness for chocoholics.</p>
+                
+            </div>
+
+            <div class="menu-card fade-in">
+                <div class="menu-card-image">
+                    <img src="assest/Menu Highlights/White Forest Cake.jpeg" alt="White Forest Cake" loading="lazy">
+                </div>
+                <h4>White Forest Cake</h4>
+                <p>Light and elegant cake with white chocolate and cherries.</p>
+                
+            </div>
+
         </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- Testimonials -->
     <section class="testimonials">
         <div class="container">
-            <h2 class="section-title fade-in">What Our Customers Say</h2>
-            <div class="testimonial-carousel fade-in">
-                <div class="testimonial">
-                    <p>"The brownies here are absolutely divine! Every bite is pure heaven. I've been coming here for years and they never disappoint."</p>
-                    <div class="customer-name">- Sarah Johnson</div>
-                </div>
-            </div>
+            <!-- Menu Section -->
+    <section id="menu" class="menu">
+    <div class="container">
+        
+        <div class="menu-table-wrapper fade-in">
+            <table class="menu-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Half</th>
+                        <th>Full</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Normal Brownie</td>
+                        <td>499</td>
+                        <td>999</td>
+                    </tr>
+                    <tr>
+                        <td>Triple Chocolate Brownies</td>
+                        <td>649</td>
+                        <td>1299</td>
+                    </tr>
+                    <tr>
+                        <td>Blonde Brownies</td>
+                        <td>549</td>
+                        <td>1099</td>
+                    </tr>
+                    <tr>
+                        <td>Triple Chocolate Blondies</td>
+                        <td>699</td>
+                        <td>1399</td>
+                    </tr>
+                    <tr>
+                        <td>Fruits & Nuts Brownie</td>
+                        <td>599</td>
+                        <td>1199</td>
+                    </tr>
+                    <tr>
+                        <td>Nutella Brownies</td>
+                        <td>639</td>
+                        <td>1279</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
         </div>
     </section>
 
@@ -886,10 +1040,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
-                </div>
-                <div class="map-placeholder fade-in">
-                    <div>📍 Visit Our Bakery Location</div>
-                </div>
+                
             </div>
         </div>
     </section>
@@ -901,12 +1052,11 @@
                 <div class="footer-section">
                     <h4>Shafa's Dessert house</h4>
                     <address>
-                        123 Sweet Street<br>
-                        Bakery District<br>
-                        Sweet City, SC 12345
+                       HOMWE BAKED goodness<br>
+                       
                     </address>
-                    <p>Phone: <a href="tel:+15551232253">(555) 123-CAKE</a></p>
-                    <p>Email: <a href="mailto:info@deliciousdelights.com">info@deliciousdelights.com</a></p>
+                    <p>Phone: <a href="tel:+15551232253">9043569743</a></p>
+                    <p>Email: <a href="mailto:info@deliciousdelights.com">shafasdesserthouse28@gmail.com</a></p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
@@ -917,17 +1067,15 @@
                 </div>
                 <div class="footer-section">
                     <h4>Hours</h4>
-                    <p>Monday - Friday: 7:00 AM - 8:00 PM</p>
-                    <p>Saturday: 8:00 AM - 9:00 PM</p>
-                    <p>Sunday: 9:00 AM - 6:00 PM</p>
+                    <p>Pre Order Only</p>
+                    
                 </div>
                 <div class="footer-section">
                     <h4>Follow Us</h4>
                     <div class="social-icons">
-                        <a href="#" class="social-icon" aria-label="Facebook">📘</a>
+                        
                         <a href="#" class="social-icon" aria-label="Instagram">📷</a>
-                        <a href="#" class="social-icon" aria-label="Twitter">🐦</a>
-                        <a href="#" class="social-icon" aria-label="Google Maps">📍</a>
+                        
                     </div>
                 </div>
             </div>
