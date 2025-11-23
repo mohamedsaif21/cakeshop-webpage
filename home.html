@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shafa's Dessert house</title>
+    <link rel="icon" type="image/png" href="assest/img/shafa desert.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --chocolate: #4A2E2B;
+            --caramel: #A65E3F;
+            --cream: #F8E6D0;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--chocolate);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(248, 230, 208, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--chocolate);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--chocolate);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--caramel);
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+        }
+
+        .mobile-menu span {
+            width: 32px;
+            height: 4px;
+            background: var(--chocolate);
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, var(--cream) 0%, #E8D5B7 100%), url('assest/hero-brownie-bg.png') no-repeat center center;
+            background-size: cover;
+            background-blend-mode: lighten;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            color: var(--chocolate);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--caramel);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--chocolate);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--caramel);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 46, 43, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--chocolate);
+            border: 2px solid var(--chocolate);
+        }
+
+        .btn-secondary:hover {
+            background: var(--chocolate);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            position: relative;
+            opacity: 0;
+            animation: fadeInRight 1s ease 0.3s forwards;
+        }
+
+        .hero-cake {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            background: linear-gradient(45deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(74, 46, 43, 0.3);
+            overflow: hidden;
+        }
+
+        .hero-cake img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            /* put the image above the decorative ::before pseudo-element */
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-cake::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: repeating-linear-gradient(
+                45deg,
+                #D2691E,
+                #D2691E 10px,
+                #8B4513 10px,
+                #8B4513 20px
+            );
+            border-radius: 15px;
+            animation: float 3s ease-in-out infinite;
+            /* ensure decorative overlay stays behind the image */
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Fade In Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Floating Slider */
+        .floating-slider {
+            padding: 4rem 0;
+            background: var(--white);
+            overflow: hidden;
+        }
+
+        .slider-container {
+            display: flex;
+            animation: scroll 20s linear infinite;
+        }
+
+        .slider-item {
+            min-width: 300px;
+            height: 200px;
+            margin: 0 2rem;
+            background: var(--caramel);
+            border-radius: 20px;
+            animation: float 4s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(166, 94, 63, 0.2);
+        }
+
+        .slider-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 20px;
+        }
+
+        .slider-item:nth-child(even) {
+            animation-delay: -2s;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--chocolate);
+            margin-bottom: 3rem;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--cream);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: var(--caramel);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(166, 94, 63, 0.2);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 20px;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            color: var(--chocolate);
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--caramel);
+            margin-bottom: 1rem;
+        }
+
+        /* Menu Section */
+        .menu {
+            background: var(--white);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-card {
+            background: var(--cream);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(74, 46, 43, 0.1);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(74, 46, 43, 0.2);
+        }
+
+        .menu-card-image {
+            width: 100%;
+            height: 180px;
+            background: var(--caramel);
+            border-radius: 15px;
+            margin: 0 auto 1rem;
+            overflow: hidden;
+        }
+
+        .menu-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .menu-card h4 {
+            font-size: 1.5rem;
+            color: var(--chocolate);
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-card p {
+            color: var(--caramel);
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--chocolate);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--cream);
+        }
+
+        .testimonial-carousel {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .testimonial {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(74, 46, 43, 0.1);
+        }
+
+        .testimonial p {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--caramel);
+            margin-bottom: 2rem;
+        }
+
+        .customer-name {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--chocolate);
+        }
+
+        /* Gallery */
+        .gallery {
+            background: var(--white);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            height: 250px;
+            background: var(--caramel);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInStagger 0.8s ease forwards;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 15px;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(166, 94, 63, 0.3);
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInStagger {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Contact */
+        .contact {
+            background: var(--cream);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(74, 46, 43, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--chocolate);
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--cream);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--caramel);
+        }
+
+        .map-placeholder {
+            height: 400px;
+            background: var(--caramel);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--chocolate);
+            color: var(--white);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--cream);
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--cream);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: var(--caramel);
+            color: var(--white);
+            font-size: 18px;
+            line-height: 1;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* change background on hover and for keyboard focus-visible only */
+        .social-icon:hover,
+        .social-icon:focus-visible {
+            background: var(--cream);
+            color: var(--chocolate);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(74,46,43,0.12);
+            outline: none;
+        }
+
+        .social-icon:focus {
+            /* keep native focus for mouse/active but don't change background so icons don't flip unexpectedly */
+            outline: none;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--caramel);
+            color: var(--cream);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-text {
+                padding-left: 0;
+                padding-right: 0;
+                padding-top: 2rem;
+            }
+
+            .hero-image {
+                justify-content: center !important;
+                align-items: center !important;
+            }
+
+            .hero-image img {
+                max-width: 90vw;
+                height: auto;
+                margin: 0 auto;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">Shafa's Dessert house</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Shafa's Dessert house</h1>
+                <p>Handcrafted with love, baked to perfection. Experience the finest artisanal treats that bring joy to every bite.</p>
+                <div class="cta-buttons">
+                    <a href="#menu" class="btn btn-primary">View Menu</a>
+                    <a href="#contact" class="btn btn-secondary">Order Now</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-cake">
+                    <img src="assest/img/hero%20page%20cake.png" alt="Hero cake" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Slider -->
+    <div class="floating-slider">
+        <div class="slider-container">
+            <div class="slider-item"><img src="assest/Menu%20Highlights/12 Amazing Brownies That Will Make You Drool.jpeg" alt="Amazing Brownies" loading="lazy"></div>
+            <div class="slider-item"><img src="assest/Menu%20Highlights/Bombshell Oreo Brownies.jpeg" alt="Bombshell Oreo Brownies" loading="lazy"></div>
+            <div class="slider-item"><img src="assest/Menu%20Highlights/Haole Brownies AKA Blonde Brownies.jpeg" alt="Haole Blonde Brownies" loading="lazy"></div>
+            <div class="slider-item"><img src="assest/Menu%20Highlights/Red Velvet Cake.jpeg" alt="Red Velvet Cake" loading="lazy"></div>
+            <div class="slider-item"><img src="assest/Menu%20Highlights/Soft and Gooey Nutella Brownies - Strawberry in the Desert.jpeg" alt="Nutella Brownies" loading="lazy"></div>
+            <div class="slider-item"><img src="assest/Menu%20Highlights/The Best Brownies Ever.jpeg" alt="The Best Brownies Ever" loading="lazy"></div>
+            <div class="slider-item"><img src="assest/Menu%20Highlights/Tin Can Chocolate Dream Cake Filipino Recipe.jpeg" alt="Tin Can Chocolate Dream Cake" loading="lazy"></div>
+            <div class="slider-item"><img src="assest/Menu%20Highlights/Ultimate Triple Layer Brownies Recipe.jpeg" alt="Ultimate Triple Layer Brownies" loading="lazy"></div>
+        </div>        
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title fade-in">About Our Bakery</h2>
+            <div class="about-content">
+                <div class="about-image fade-in"><img src="assest/img/Untitled%20design%20(4).png" alt="Our bakery" loading="lazy"></div>
+                <div class="about-text fade-in">
+                    <h3>Crafting Sweet Memories Since 1995</h3>
+                    <p>Welcome to Delicious Delights, where every creation tells a story of passion, tradition, and exceptional taste. Our master bakers combine time-honored techniques with premium ingredients to create unforgettable experiences.</p>
+                    <p>From our signature brownies to artisanal cakes, each product is handcrafted with meticulous attention to detail. We believe that great baking is an art form, and every bite should be a celebration of flavor.</p>
+                    <p>Visit us and discover why we've been the community's favorite bakery for over two decades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu">
+        <div class="container">
+            <h2 class="section-title fade-in">Menu Highlights</h2>
+            <div class="menu-grid">
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/12 Amazing Brownies That Will Make You Drool.jpeg" alt="Amazing Brownies"></div>
+                    <h4>Amazing Brownies</h4>
+                    <p>12 varieties of rich, fudgy brownies that will make you drool.</p>
+                    <div class="price">₹1,078</div>
+                </div>
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Bombshell Oreo Brownies.jpeg" alt="Bombshell Oreo Brownies"></div>
+                    <h4>Bombshell Oreo Brownies</h4>
+                    <p>Oreo-studded brownies with extra crunch and cream.</p>
+                    <div class="price">₹1,161</div>
+                </div>
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Haole Brownies AKA Blonde Brownies.jpeg" alt="Haole Blonde Brownies"></div>
+                    <h4>Haole (Blonde) Brownies</h4>
+                    <p>Buttery blondies with caramel notes and toasted nuts.</p>
+                    <div class="price">₹995</div>
+                </div>
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Red Velvet Cake.jpeg" alt="Red Velvet Cake"></div>
+                    <h4>Red Velvet Cake</h4>
+                    <p>Classic red velvet with cream cheese frosting.</p>
+                    <div class="price">₹2,074</div>
+                </div>
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Soft and Gooey Nutella Brownies - Strawberry in the Desert.jpeg" alt="Nutella Brownies"></div>
+                    <h4>Nutella Brownies</h4>
+                    <p>Soft, gooey Nutella brownies — a hazelnut-chocolate dream.</p>
+                    <div class="price">₹1,244</div>
+                </div>
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/The Best Brownies Ever.jpeg" alt="The Best Brownies Ever"></div>
+                    <h4>The Best Brownies</h4>
+                    <p>Our signature brownie — fudgy center with a crackly top.</p>
+                    <div class="price">₹1,078</div>
+                </div>
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Tin Can Chocolate Dream Cake Filipino Recipe.jpeg" alt="Tin Can Chocolate Dream Cake"></div>
+                    <h4>Tin Can Chocolate Dream Cake</h4>
+                    <p>A Filipino-inspired chocolate cake with rich layers.</p>
+                    <div class="price">₹2,489</div>
+                </div>
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/Ultimate Triple Layer Brownies Recipe.jpeg" alt="Ultimate Triple Layer Brownies"></div>
+                    <h4>Ultimate Triple Layer Brownies</h4>
+                    <p>Three layers of chocolatey goodness for chocoholics.</p>
+                    <div class="price">₹1,410</div>
+                </div>
+                <div class="menu-card fade-in">
+                    <div class="menu-card-image"><img src="assest/Menu%20Highlights/White Forest Cake.jpeg" alt="White Forest Cake"></div>
+                    <h4>White Forest Cake</h4>
+                    <p>Light and elegant cake with white chocolate and cherries.</p>
+                    <div class="price">₹2,323</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title fade-in">What Our Customers Say</h2>
+            <div class="testimonial-carousel fade-in">
+                <div class="testimonial">
+                    <p>"The brownies here are absolutely divine! Every bite is pure heaven. I've been coming here for years and they never disappoint."</p>
+                    <div class="customer-name">- Sarah Johnson</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Creations</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="assest/Menu%20Highlights/12 Amazing Brownies That Will Make You Drool.jpeg" alt="Amazing Brownies" loading="lazy"></div>
+                <div class="gallery-item"><img src="assest/Menu%20Highlights/Bombshell Oreo Brownies.jpeg" alt="Bombshell Oreo Brownies" loading="lazy"></div>
+                <div class="gallery-item"><img src="assest/Menu%20Highlights/Haole Brownies AKA Blonde Brownies.jpeg" alt="Haole Blonde Brownies" loading="lazy"></div>
+                <div class="gallery-item"><img src="assest/Menu%20Highlights/Red Velvet Cake.jpeg" alt="Red Velvet Cake" loading="lazy"></div>
+                <div class="gallery-item"><img src="assest/Menu%20Highlights/Soft and Gooey Nutella Brownies - Strawberry in the Desert.jpeg" alt="Nutella Brownies" loading="lazy"></div>
+                <div class="gallery-item"><img src="assest/Menu%20Highlights/The Best Brownies Ever.jpeg" alt="The Best Brownies Ever" loading="lazy"></div>
+                <div class="gallery-item"><img src="assest/Menu%20Highlights/Tin Can Chocolate Dream Cake Filipino Recipe.jpeg" alt="Tin Can Chocolate Dream Cake" loading="lazy"></div>
+                <div class="gallery-item"><img src="assest/Menu%20Highlights/Ultimate Triple Layer Brownies Recipe.jpeg" alt="Ultimate Triple Layer Brownies" loading="lazy"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title fade-in">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-form fade-in">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+                <div class="map-placeholder fade-in">
+                    <div>📍 Visit Our Bakery Location</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Shafa's Dessert house</h4>
+                    <address>
+                        123 Sweet Street<br>
+                        Bakery District<br>
+                        Sweet City, SC 12345
+                    </address>
+                    <p>Phone: <a href="tel:+15551232253">(555) 123-CAKE</a></p>
+                    <p>Email: <a href="mailto:info@deliciousdelights.com">info@deliciousdelights.com</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#menu">Our Menu</a>
+                    <a href="#about">About Us</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Hours</h4>
+                    <p>Monday - Friday: 7:00 AM - 8:00 PM</p>
+                    <p>Saturday: 8:00 AM - 9:00 PM</p>
+                    <p>Sunday: 9:00 AM - 6:00 PM</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" aria-label="Facebook">📘</a>
+                        <a href="#" class="social-icon" aria-label="Instagram">📷</a>
+                        <a href="#" class="social-icon" aria-label="Twitter">🐦</a>
+                        <a href="#" class="social-icon" aria-label="Google Maps">📍</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Shafa's Dessert house. All rights reserved. Made with ❤️ and lots of chocolate!</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon.');
+            this.reset();
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(248, 230, 208, 0.98)';
+            } else {
+                nav.style.background = 'rgba(248, 230, 208, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
