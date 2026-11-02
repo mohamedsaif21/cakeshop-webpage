@@ -970,6 +970,11 @@ section {
   border-top: 1px solid var(--border-warm);
 }
 
+.price-group {
+  display: flex;
+  flex-direction: column;
+}
+
 .price-caption {
   display: block;
   font-size: 0.62rem;
@@ -1280,6 +1285,11 @@ section {
   display: flex;
   align-items: center;
   gap: 1.25rem;
+}
+
+.total-display {
+  display: flex;
+  flex-direction: column;
 }
 
 .total-lbl {
