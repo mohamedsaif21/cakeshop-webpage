@@ -15,17 +15,20 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 export default function Home() {
   return (
     <>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Navbar />
-      <Hero />
-      <TrustBar />
-      <Marquee />
-      <About />
-      <Menu />
-      <BoxBuilder />
-      <Process />
-      <Reviews />
-      <Gallery />
-      <Contact />
+      <main id="main">
+        <Hero />
+        <TrustBar />
+        <Marquee />
+        <About />
+        <Menu />
+        <BoxBuilder />
+        <Process />
+        <Reviews />
+        <Gallery />
+        <Contact />
+      </main>
       <Footer />
       <FloatingWhatsApp />
     </>
