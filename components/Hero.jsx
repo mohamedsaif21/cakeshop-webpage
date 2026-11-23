@@ -1,14 +1,14 @@
 export default function Hero() {
   return (
-    <header id="home" className="hero">
+    <section id="home" className="hero">
       <div className="container hero-grid">
         <div className="hero-text">
           <div className="hero-pill">
-            <i className="fas fa-certificate"></i> Small-Batch Artisanal Baking • Pre-Order Only
+            <i className="fas fa-certificate" aria-hidden="true"></i> Small-Batch Artisanal Baking &bull; Pre-Order Only
           </div>
           <h1>
-            Handcrafted Indulgence, <br />
-            <span className="accent-gradient">Baked With Passion.</span>
+            Handcrafted Indulgence,
+            <em>Baked With Passion.</em>
           </h1>
           <p>
             Welcome to <strong>Shafa&apos;s Dessert House</strong>. We bake ultra-fudgy brownies, golden blondies, and
@@ -17,44 +17,40 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions">
-            <a href="#menu" className="btn-primary"><i className="fas fa-cookie-bite"></i> Explore Menu</a>
-            <a href="#contact" className="btn-secondary"><i className="fab fa-whatsapp"></i> Order Now</a>
+            <a href="#menu" className="btn-primary"><i className="fas fa-cookie-bite" aria-hidden="true"></i> Explore Menu</a>
+            <a href="#contact" className="btn-secondary"><i className="fab fa-whatsapp" aria-hidden="true"></i> Order Now</a>
           </div>
 
           <div className="hero-proof">
             <div>
               <div className="proof-stars">
-                {[...Array(5)].map((_, i) => <i key={i} className="fas fa-star"></i>)}
+                <span className="sr-only">Rated 4.9 out of 5</span>
+                {[...Array(5)].map((_, i) => <i key={i} className="fas fa-star" aria-hidden="true"></i>)}
               </div>
-              <div className="proof-text"><strong>4.9 / 5</strong> Loved by 500+ Dessert Enthusiasts</div>
+              <div className="proof-text"><strong>4.9 / 5</strong> &middot; Loved by 500+ Dessert Enthusiasts</div>
             </div>
-            <div style={{ borderLeft: "1px solid var(--border-warm)", paddingLeft: "1.5rem" }}>
-              <div className="proof-text" style={{ color: "var(--caramel)" }}><strong>100% Freshly Baked</strong></div>
+            <span className="hero-proof-divider" aria-hidden="true"></span>
+            <div>
+              <div className="proof-text proof-highlight"><strong>100% Freshly Baked</strong></div>
               <div className="proof-text">Eggless &amp; Customization Options</div>
             </div>
           </div>
         </div>
 
         <div className="hero-visual">
-          <div className="hero-badge-float badge-left">
-            <div className="badge-icon"><i className="fas fa-heart"></i></div>
-            <div>
-              <div className="badge-title">Ultra Fudgy Texture</div>
-              <div className="badge-subtitle">Crackly tops &amp; gooey centers</div>
-            </div>
-          </div>
-          <div className="hero-badge-float badge-right">
-            <div className="badge-icon"><i className="fas fa-award"></i></div>
-            <div>
-              <div className="badge-title">Pure Dairy Butter</div>
-              <div className="badge-subtitle">Real cocoa &amp; no preservatives</div>
-            </div>
-          </div>
           <div className="hero-cake-card">
-            <img src="/assest/img/hero page cake.png" alt="Shafa's Signature Artisanal Chocolate Cake" />
+            <img
+              src="/assest/img/hero page cake.png"
+              alt="Shafa's signature layered chocolate cake"
+              fetchPriority="high"
+            />
           </div>
+          <div className="hero-stamp" aria-hidden="true">
+            <img src="/assest/img/shafa desert.png" alt="" />
+          </div>
+          <p className="hero-photo-caption">Signature bakes &middot; made to order</p>
         </div>
       </div>
-    </header>
+    </section>
   );
 }
