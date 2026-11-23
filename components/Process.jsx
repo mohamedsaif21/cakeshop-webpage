@@ -18,6 +18,7 @@ export default function Process() {
         </div>
 
         <ol className="steps-container">
+          <span className="steps-rule" aria-hidden="true"></span>
           {STEPS.map((s) => (
             <li className="step-block" key={s.n}>
               <span className="step-num">{s.n}</span>

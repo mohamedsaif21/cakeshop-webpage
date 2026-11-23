@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FILTERS, PRICE_ROWS, PRODUCTS, img } from "@/lib/data";
 import { orderItem, waLink } from "@/lib/whatsapp";
 
@@ -53,7 +55,35 @@ function ProductCard({ p }) {
 
 export default function Menu() {
   const [cat, setCat] = useState("all");
+  const gridRef = useRef(null);
   const visible = PRODUCTS.filter((p) => cat === "all" || p.categories.includes(cat));
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      const ctx = gsap.context(() => {
+        gsap.from(".product-card", {
+          y: 30,
+          autoAlpha: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 88%",
+            once: true,
+          },
+        });
+      }, gridRef);
+
+      return () => ctx.revert();
+    });
+
+    ScrollTrigger.refresh();
+    return () => mm.revert();
+  }, [cat]);
 
   return (
     <section id="menu" className="menu-section">
@@ -81,7 +111,7 @@ export default function Menu() {
           ))}
         </div>
 
-        <div className="menu-grid" aria-live="polite">
+        <div className="menu-grid" aria-live="polite" ref={gridRef}>
           {visible.map((p) => <ProductCard key={p.id} p={p} />)}
         </div>
 
