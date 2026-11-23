@@ -577,20 +577,8 @@ h6 {
   align-items: center;
   min-height: min(94vh, 940px);
   padding: 9.5rem 0 5.5rem;
-  background:
-    radial-gradient(circle at 14% 12%, rgba(217, 154, 61, 0.12), transparent 40%),
-    linear-gradient(155deg, var(--cream) 0%, #f4e4ce 100%);
+  background: var(--cream);
   overflow: hidden;
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(74, 46, 43, 0.07) 0.6px, transparent 0.6px);
-  background-size: 22px 22px;
-  opacity: 0.35;
-  pointer-events: none;
 }
 
 .hero-grid {
@@ -1097,6 +1085,23 @@ h6 {
   border-color: rgba(176, 106, 63, 0.5);
 }
 
+@media (min-width: 1081px) {
+  .menu-grid .product-card:first-child {
+    grid-column: span 2;
+    flex-direction: row;
+  }
+
+  .menu-grid .product-card:first-child .product-thumbnail {
+    flex: 0 0 48%;
+    aspect-ratio: auto;
+  }
+
+  .menu-grid .product-card:first-child .product-info {
+    justify-content: center;
+    padding: 1.75rem;
+  }
+}
+
 .product-thumbnail {
   position: relative;
   aspect-ratio: 5 / 4;
@@ -1336,7 +1341,7 @@ h6 {
 }
 
 .box-builder-section {
-  background: linear-gradient(170deg, var(--cream-2), var(--cream));
+  background: var(--cream);
 }
 
 .builder-container {
@@ -1599,11 +1604,23 @@ h6 {
 }
 
 .steps-container {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-bottom: 3.5rem;
   counter-reset: step;
+}
+
+.steps-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--caramel-deep);
+  transform-origin: left center;
+  pointer-events: none;
 }
 
 .step-block {
@@ -1736,7 +1753,7 @@ h6 {
 }
 
 .reviews-section {
-  background: linear-gradient(170deg, var(--cream), var(--cream-2));
+  background: var(--cream-2);
 }
 
 .reviews-grid {
