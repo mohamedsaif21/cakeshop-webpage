@@ -4,24 +4,26 @@ import { useUI } from "./UIProvider";
 
 export default function Marquee() {
   const { openLightbox } = useUI();
-  // Duplicate the full set so the -50% translate loops seamlessly
   const items = [...MARQUEE, ...MARQUEE];
 
   return (
-    <div className="marquee-section">
+    <section className="marquee-section" aria-label="Brownie and cake highlights">
       <div className="marquee-track">
         {items.map((m, i) => (
-          <div
+          <button
             key={i}
+            type="button"
             className="marquee-item"
             onClick={() => openLightbox(img(m.file), m.title, m.desc)}
-            aria-hidden={i >= MARQUEE.length}
+            aria-label={`View ${m.name}`}
+            aria-hidden={i >= MARQUEE.length ? "true" : undefined}
+            tabIndex={i >= MARQUEE.length ? -1 : 0}
           >
-            <img src={img(m.file)} alt={m.title} loading="lazy" />
-            <div className="marquee-caption"><div className="marquee-name">{m.name}</div></div>
-          </div>
+            <img src={img(m.file)} alt="" loading="lazy" />
+            <span className="marquee-caption"><span className="marquee-name">{m.name}</span></span>
+          </button>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

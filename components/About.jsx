@@ -1,4 +1,4 @@
-import { ABOUT_FEATURES } from "@/lib/data";
+import { ABOUT_FEATURES, img } from "@/lib/data";
 
 export default function About() {
   return (
@@ -6,17 +6,22 @@ export default function About() {
       <div className="container about-grid">
         <div className="about-media-box">
           <div className="about-frame">
-            <img src="/assest/img/shafa desert.png" alt="Shafa's Dessert House Artisanal Bakery" loading="lazy" />
+            <img src={img("The Best Brownies Ever.jpeg")} alt="Freshly baked fudgy brownies from Shafa's Dessert House" loading="lazy" />
           </div>
           <div className="about-seal">
-            <div className="seal-num">100%</div>
-            <div className="seal-text">Home Baked Goodness</div>
+            <img className="seal-mark" src="/assest/img/shafa desert.png" alt="" loading="lazy" />
+            <div>
+              <div className="seal-num">100%</div>
+              <div className="seal-text">Home Baked Goodness</div>
+            </div>
           </div>
         </div>
 
         <div className="about-content">
-          <span className="sub-tag"><i className="fas fa-cookie"></i> Our Heartfelt Story</span>
-          <h2>Crafting Sweet Moments from Our Kitchen to Yours</h2>
+          <div className="section-header" data-index="01">
+            <span className="sub-tag"><i className="fas fa-cookie" aria-hidden="true"></i> Our Heartfelt Story</span>
+            <h2>Crafting Sweet Moments <em>from Our Kitchen to Yours</em></h2>
+          </div>
           <p>
             <strong>Shafa&apos;s Dessert House</strong> was born from an unapologetic obsession with authentic,
             melt-in-the-mouth desserts. While commercial bakeries rely on premixes, artificial stabilizers, and mass
@@ -31,7 +36,7 @@ export default function About() {
           <div className="about-highlights">
             {ABOUT_FEATURES.map((f) => (
               <div className="about-feature" key={f.title}>
-                <i className={`fas ${f.icon} feature-icon`}></i>
+                <i className={`fas ${f.icon} feature-icon`} aria-hidden="true"></i>
                 <div>
                   <h4>{f.title}</h4>
                   <p>{f.text}</p>
@@ -40,7 +45,9 @@ export default function About() {
             ))}
           </div>
 
-          <a href="#menu" className="btn-primary"><i className="fas fa-utensils"></i> Explore Our Creations</a>
+          <a href="#menu" className="text-link">
+            Explore our creations <i className="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
         </div>
       </div>
     </section>

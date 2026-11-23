@@ -11,21 +11,26 @@ import Gallery from "@/components/Gallery";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import ScrollStory from "@/components/ScrollStory";
 
 export default function Home() {
   return (
     <>
+      <a href="#main" className="skip-link">Skip to content</a>
+      <ScrollStory />
       <Navbar />
-      <Hero />
-      <TrustBar />
-      <Marquee />
-      <About />
-      <Menu />
-      <BoxBuilder />
-      <Process />
-      <Reviews />
-      <Gallery />
-      <Contact />
+      <main id="main">
+        <Hero />
+        <TrustBar />
+        <Marquee />
+        <About />
+        <Menu />
+        <BoxBuilder />
+        <Process />
+        <Reviews />
+        <Gallery />
+        <Contact />
+      </main>
       <Footer />
       <FloatingWhatsApp />
     </>
