@@ -45,9 +45,6 @@ export default function About() {
             ))}
           </div>
 
-          <a href="#menu" className="text-link">
-            Explore our creations <i className="fas fa-arrow-right" aria-hidden="true"></i>
-          </a>
         </div>
       </div>
     </section>

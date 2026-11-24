@@ -2,14 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { AVAILABILITY, FILTERS, PRICE_ROWS, PRODUCTS, img } from "@/lib/data";
+import { FILTERS, PRODUCTS, img } from "@/lib/data";
 import {
   MAX_QUANTITY,
   MIN_QUANTITY,
   calculateOrderTotal,
   clampQuantity,
   formatPrice,
-  waLink,
 } from "@/lib/whatsapp";
 
 function ProductCard({ p }) {
@@ -18,18 +17,14 @@ function ProductCard({ p }) {
   const portion = p.portions[idx];
   const single = p.portions.length === 1;
   const featured = p.id === "sampler";
-  const status = AVAILABILITY[p.status] ?? AVAILABILITY.available;
   const soldOut = p.status === "soldout";
   const quantityId = `quantity-${p.id}`;
   const unitPrice = formatPrice(portion.price);
   const total = formatPrice(calculateOrderTotal(portion.price, quantity));
 
   return (
-    <article className={`product-card ${featured ? "is-featured" : ""} is-${p.status}`}>
+    <article className={`product-card ${featured ? "is-featured" : ""}`}>
       <div className="product-thumbnail">
-        <span className="product-tag">{p.tag}</span>
-        <span className={`availability-tag availability-tag--${p.status}`}>{status.label}</span>
-        <span className="veg-symbol" role="img" aria-label="Eggless version available on request" title="Eggless version available on request"></span>
         <img src={img(p.image)} alt={p.title} loading="lazy" />
       </div>
       <div className="product-info">
@@ -138,9 +133,6 @@ export default function Menu() {
               Small-batch brownies, blondies and celebration cakes, made with real butter and finished by hand.
             </p>
           </div>
-          <a className="text-link collection-action" href="#menu-grid" onClick={() => setCat("all")}>
-            Explore all <i className="fas fa-arrow-right" aria-hidden="true"></i>
-          </a>
         </header>
 
         <div className="menu-filter-nav" role="group" aria-label="Filter menu by category">
@@ -159,46 +151,6 @@ export default function Menu() {
 
         <div id="menu-grid" className="menu-grid" aria-live="polite" ref={gridRef}>
           {visible.map((p) => <ProductCard key={p.id} p={p} />)}
-        </div>
-
-        <div id="pricing" className="pricing-section">
-          <div className="pricing-head">
-            <span className="sub-tag"><i className="fas fa-receipt" aria-hidden="true"></i> Verified Price Index</span>
-            <h3>Transparent Portion &amp; Price Index</h3>
-          </div>
-
-          <div className="table-responsive-box">
-            <table className="pricing-table">
-              <caption className="sr-only">Shafa's Dessert House price index</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Artisanal Item</th>
-                  <th scope="col">Half Box / 500g</th>
-                  <th scope="col">Full Box / 1 Kg</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PRICE_ROWS.map((r) => (
-                  <tr key={r.item}>
-                    <th scope="row">{r.item}</th>
-                    <td>{r.half}</td>
-                    <td>{r.full}</td>
-                    <td>
-                      <a
-                        href={waLink(`Hi! I'd like to order ${r.msg}.`)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-order-wa btn-order-wa--compact"
-                      >
-                        Order
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
       </div>
     </section>
