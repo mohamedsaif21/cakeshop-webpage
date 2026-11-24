@@ -1057,13 +1057,16 @@ h6 {
   }
 
   .product-card.is-featured .product-info {
-    justify-content: flex-end;
-    gap: 0.8rem;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.7rem;
     padding: 1rem;
+    text-align: left;
   }
 
   .product-card.is-featured .product-name {
     font-size: 1.75rem;
+    text-align: left;
   }
 }
 
@@ -1100,6 +1103,14 @@ h6 {
   font-size: 1.3rem;
   line-height: 1.12;
   color: var(--chocolate-deep);
+}
+
+.product-detail-image {
+  display: block;
+  width: 100%;
+  height: clamp(160px, 18vw, 240px);
+  flex: 0 0 auto;
+  object-fit: cover;
 }
 
 .product-controls {
@@ -2764,6 +2775,10 @@ textarea.form-field {
     aspect-ratio: 16 / 9;
   }
 
+  .product-detail-image {
+    height: 180px;
+  }
+
   .footer-mosaic {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -3084,6 +3099,10 @@ textarea.form-field {
 @media (max-width: 420px) {
   .menu-grid {
     grid-template-columns: 1fr;
+  }
+
+  .product-detail-image {
+    height: 160px;
   }
 
   .product-controls {

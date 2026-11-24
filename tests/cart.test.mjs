@@ -114,6 +114,27 @@ test("builds an accurate WhatsApp review message using the configured number", (
   assert.equal(decodeURIComponent(link.split("?text=")[1]), message);
 });
 
+test("uses the uploaded gift-box image only in the featured product panel", () => {
+  const sampler = data.PRODUCTS.find((product) => product.id === "sampler");
+  const menu = read("components/Menu.jsx");
+  const styles = read("app/globals.css");
+
+  assert.equal(sampler.detailImage, "/assest/img/image.png");
+  assert.equal(sampler.detailAlt, "Assorted brownie gift box");
+  assert.equal(data.PRODUCTS.filter((product) => product.detailImage).length, 1);
+  assert.ok(menu.includes("featured && p.detailImage"));
+  assert.ok(menu.indexOf('className="product-name"') < menu.indexOf("product-detail-image"));
+  assert.ok(menu.indexOf("product-detail-image") < menu.indexOf('className="portion-tabs"'));
+  const featuredInfoStyles = styles.match(/\.product-card\.is-featured \.product-info \{[^}]*\}/)?.[0] ?? "";
+  assert.match(featuredInfoStyles, /justify-content: flex-start/);
+  assert.match(featuredInfoStyles, /gap: 0\.7rem/);
+  const imageStyles = styles.match(/\.product-detail-image \{[^}]*\}/)?.[0] ?? "";
+  assert.match(imageStyles, /width: 100%/);
+  assert.match(imageStyles, /flex: 0 0 auto/);
+  assert.match(imageStyles, /object-fit: cover/);
+  assert.doesNotMatch(imageStyles, /border|border-radius|background|padding/);
+});
+
 test("wires the cart UI into the menu and app shell", () => {
   const menu = read("components/Menu.jsx");
   const cartUi = read("components/Cart.jsx");

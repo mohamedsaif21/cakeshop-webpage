@@ -32,6 +32,17 @@ function ProductCard({ p }) {
       <div className="product-info">
         <h3 className="product-name">{p.title}</h3>
 
+        {featured && p.detailImage && (
+          <img
+            className="product-detail-image"
+            src={p.detailImage}
+            alt={p.detailAlt || p.title}
+            width={p.detailWidth}
+            height={p.detailHeight}
+            loading="lazy"
+          />
+        )}
+
         <div className="portion-tabs" role="group" aria-label={`Choose portion for ${p.title}`}>
           {p.portions.map((o, i) => (
             <button
