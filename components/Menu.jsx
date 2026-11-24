@@ -127,7 +127,6 @@ export default function Menu() {
       <div className="container">
         <header className="collection-header">
           <div>
-            <span className="collection-eyebrow">OUR COLLECTION</span>
             <h2 className="collection-title">Our Signature <em>Creations</em></h2>
             <p className="collection-desc">
               Small-batch brownies, blondies and celebration cakes, made with real butter and finished by hand.

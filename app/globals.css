@@ -167,22 +167,6 @@ h6 {
   z-index: 1;
 }
 
-.sub-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-bottom: 1.1rem;
-  padding: 0.4rem 0.95rem;
-  border: 1px solid var(--border-warm);
-  border-radius: 999px;
-  background: rgba(176, 106, 63, 0.08);
-  color: var(--caramel-deep);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
 .section-title {
   font-family: var(--font-serif);
   font-size: var(--fs-h2);
@@ -979,16 +963,6 @@ h6 {
   margin-bottom: clamp(2rem, 4vw, 3.25rem);
 }
 
-.collection-eyebrow {
-  display: block;
-  margin-bottom: 0.85rem;
-  color: var(--caramel-deep);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
 .collection-title {
   font-family: var(--font-serif);
   font-size: var(--fs-h2);
@@ -1638,6 +1612,7 @@ h6 {
 }
 
 .savor-text h3 {
+  margin-top: 0;
   margin-bottom: 0.9rem;
   font-family: var(--font-serif);
   font-size: clamp(1.6rem, 2.6vw, 2.1rem);
@@ -1911,13 +1886,8 @@ h6 {
   box-shadow: var(--shadow-md);
 }
 
-.contact-card .sub-tag {
-  background: rgba(255, 253, 250, 0.06);
-  border-color: var(--hairline-light);
-  color: var(--honey-gold);
-}
-
 .contact-card h3 {
+  margin-top: 0;
   font-family: var(--font-serif);
   font-size: clamp(1.7rem, 2.6vw, 2.2rem);
   line-height: 1.15;

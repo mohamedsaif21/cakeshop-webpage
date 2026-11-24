@@ -52,7 +52,6 @@ export default function BoxBuilder() {
     <section id="box-builder" className="box-builder-section">
       <div className="container">
         <div className="section-header" data-index="03">
-          <span className="sub-tag"><i className="fas fa-magic" aria-hidden="true"></i> Interactive Experience</span>
           <h2 className="section-title">Build Your <em>Custom Brownie Box</em></h2>
         </div>
 
