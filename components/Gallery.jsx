@@ -9,11 +9,7 @@ export default function Gallery() {
     <section id="gallery" className="gallery-section">
       <div className="container">
         <div className="section-header" data-index="06">
-          <span className="sub-tag"><i className="fas fa-camera" aria-hidden="true"></i> Visual Treats</span>
           <h2 className="section-title">Our Culinary <em>Gallery</em></h2>
-          <p className="section-desc">
-            A feast for your eyes. Click on any creation to view high-resolution photography and flavor notes.
-          </p>
         </div>
 
         <div className="gallery-mosaic">

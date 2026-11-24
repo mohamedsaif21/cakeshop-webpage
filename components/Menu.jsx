@@ -2,24 +2,46 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FILTERS, PRICE_ROWS, PRODUCTS, img } from "@/lib/data";
-import { orderItem, waLink } from "@/lib/whatsapp";
+import { useCart } from "@/components/CartProvider";
+import { FILTERS, PRODUCTS, img } from "@/lib/data";
+import {
+  MAX_QUANTITY,
+  MIN_QUANTITY,
+  calculateOrderTotal,
+  clampQuantity,
+  formatPrice,
+} from "@/lib/whatsapp";
 
 function ProductCard({ p }) {
   const [idx, setIdx] = useState(0);
+  const [quantity, setQuantity] = useState(MIN_QUANTITY);
+  const { addProduct } = useCart();
   const portion = p.portions[idx];
   const single = p.portions.length === 1;
+  const featured = p.id === "sampler";
+  const soldOut = p.status === "soldout";
+  const quantityId = `quantity-${p.id}`;
+  const unitPrice = formatPrice(portion.price);
+  const total = formatPrice(calculateOrderTotal(portion.price, quantity));
 
   return (
-    <article className={`product-card ${p.tag === "Bestseller" ? "is-featured" : ""}`}>
+    <article className={`product-card ${featured ? "is-featured" : ""}`}>
       <div className="product-thumbnail">
-        <span className="product-tag">{p.tag}</span>
-        <span className="veg-symbol" role="img" aria-label="Eggless version available on request" title="Eggless version available on request"></span>
         <img src={img(p.image)} alt={p.title} loading="lazy" />
       </div>
       <div className="product-info">
         <h3 className="product-name">{p.title}</h3>
-        <p className="product-desc">{p.desc}</p>
+
+        {featured && p.detailImage && (
+          <img
+            className="product-detail-image"
+            src={p.detailImage}
+            alt={p.detailAlt || p.title}
+            width={p.detailWidth}
+            height={p.detailHeight}
+            loading="lazy"
+          />
+        )}
 
         <div className="portion-tabs" role="group" aria-label={`Choose portion for ${p.title}`}>
           {p.portions.map((o, i) => (
@@ -28,26 +50,62 @@ function ProductCard({ p }) {
               type="button"
               className={`portion-tab ${i === idx ? "active" : ""} ${single ? "portion-tab--full" : ""}`}
               aria-pressed={i === idx}
+              disabled={soldOut}
               onClick={() => setIdx(i)}
             >
-              {o.tab}
+              <span className="portion-tab-title">{o.short}</span>
+              <span className="portion-tab-note">
+                {o.pcs} <span aria-hidden="true">·</span> {formatPrice(o.price)}
+              </span>
             </button>
           ))}
         </div>
 
-        <div className="product-bottom">
-          <div className="price-group">
-            <span className="price-caption">Starting at</span>
-            <span className="price-amount">₹{portion.price.toLocaleString("en-IN")}</span>
+        <div className="product-controls">
+          <div className="quantity-field">
+            <span className="control-label" id={quantityId}>Qty</span>
+            <div className="quantity-stepper" role="group" aria-labelledby={quantityId}>
+              <button
+                type="button"
+                onClick={() => setQuantity(clampQuantity(quantity - 1))}
+                disabled={soldOut || quantity <= MIN_QUANTITY}
+                aria-label={`Decrease quantity for ${p.title}`}
+              >
+                −
+              </button>
+              <input
+                type="number"
+                min={MIN_QUANTITY}
+                max={MAX_QUANTITY}
+                value={quantity}
+                onChange={(event) => setQuantity(clampQuantity(event.target.value))}
+                disabled={soldOut}
+                aria-label={`Quantity for ${p.title}`}
+                inputMode="numeric"
+              />
+              <button
+                type="button"
+                onClick={() => setQuantity(clampQuantity(quantity + 1))}
+                disabled={soldOut || quantity >= MAX_QUANTITY}
+                aria-label={`Increase quantity for ${p.title}`}
+              >
+                +
+              </button>
+            </div>
           </div>
-          <button
-            type="button"
-            className="btn-order-wa"
-            onClick={() => orderItem(p.name, portion.label, `₹${portion.price}`)}
-          >
-            <i className="fab fa-whatsapp" aria-hidden="true"></i> Order Now
-          </button>
+          <div className="order-total" aria-live="polite">
+            <span className="price-caption">Total · {quantity} × {unitPrice}</span>
+            <span className="total-amount" key={`${portion.price}-${quantity}`}>{total}</span>
+          </div>
         </div>
+        <button
+          type="button"
+          className="btn-add-cart"
+          onClick={() => addProduct(p, idx, quantity)}
+          disabled={soldOut}
+        >
+          <i className="fas fa-cart-plus" aria-hidden="true"></i> Add to Order
+        </button>
       </div>
     </article>
   );
@@ -65,11 +123,11 @@ export default function Menu() {
     mm.add("(prefers-reduced-motion: no-preference)", () => {
       const ctx = gsap.context(() => {
         gsap.from(".product-card", {
-          y: 30,
+          y: 24,
           autoAlpha: 0,
-          duration: 0.7,
+          duration: 0.65,
           ease: "power3.out",
-          stagger: 0.08,
+          stagger: 0.06,
           scrollTrigger: {
             trigger: gridRef.current,
             start: "top 88%",
@@ -88,14 +146,14 @@ export default function Menu() {
   return (
     <section id="menu" className="menu-section">
       <div className="container">
-        <div className="section-header" data-index="02">
-          <span className="sub-tag"><i className="fas fa-utensils" aria-hidden="true"></i> Artisanal Menu</span>
-          <h2 className="section-title">Our Signature <em>Creations</em></h2>
-          <p className="section-desc">
-            Each creation is baked strictly upon confirmed pre-order. Choose your favorite treats below or customize
-            portions for your gathering.
-          </p>
-        </div>
+        <header className="collection-header">
+          <div>
+            <h2 className="collection-title">Our Signature <em>Creations</em></h2>
+            <p className="collection-desc">
+              Small-batch brownies, blondies and celebration cakes, made with real butter and finished by hand.
+            </p>
+          </div>
+        </header>
 
         <div className="menu-filter-nav" role="group" aria-label="Filter menu by category">
           {FILTERS.map((f) => (
@@ -111,60 +169,8 @@ export default function Menu() {
           ))}
         </div>
 
-        <div className="menu-grid" aria-live="polite" ref={gridRef}>
+        <div id="menu-grid" className="menu-grid" aria-live="polite" ref={gridRef}>
           {visible.map((p) => <ProductCard key={p.id} p={p} />)}
-        </div>
-
-        <div id="pricing" className="pricing-section">
-          <div className="pricing-head">
-            <span className="sub-tag"><i className="fas fa-receipt" aria-hidden="true"></i> Verified Price Index</span>
-            <h3>Transparent Portion &amp; Price Index</h3>
-            <p className="section-desc">
-              Every treat is made in small batches with real butter. Eggless variations available on request.
-            </p>
-          </div>
-
-          <div className="table-responsive-box">
-            <table className="pricing-table">
-              <caption className="sr-only">Shafa's Dessert House pre-order price index</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Artisanal Item</th>
-                  <th scope="col">Half Box / 500g</th>
-                  <th scope="col">Full Box / 1 Kg</th>
-                  <th scope="col">Pre-Order</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PRICE_ROWS.map((r) => (
-                  <tr key={r.item}>
-                    <th scope="row">
-                      {r.item}
-                      {r.badge && <span className="tbl-badge">{r.badge}</span>}
-                    </th>
-                    {r.single ? (
-                      <td className="single-price" colSpan={2}>{r.single}</td>
-                    ) : (
-                      <>
-                        <td>{r.half}</td>
-                        <td>{r.full}</td>
-                      </>
-                    )}
-                    <td>
-                      <a
-                        href={waLink(`Hi! I'd like to order ${r.msg}.`)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-order-wa btn-order-wa--compact"
-                      >
-                        Order <i className="fab fa-whatsapp" aria-hidden="true"></i>
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
       </div>
     </section>

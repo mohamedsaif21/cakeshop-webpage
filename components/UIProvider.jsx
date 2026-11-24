@@ -95,7 +95,7 @@ export default function UIProvider({ children }) {
                   className="btn-order-wa"
                   onClick={() => orderItem(lightbox.title, "Standard Selection", "Inquire for Portions")}
                 >
-                  <i className="fab fa-whatsapp" aria-hidden="true"></i> Order on WhatsApp
+                  Order on WhatsApp
                 </button>
               </div>
             </div>

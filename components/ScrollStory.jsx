@@ -19,8 +19,7 @@ export default function ScrollStory() {
         const hero = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.08 });
 
         hero
-          .from(".hero-pill", { y: 16, autoAlpha: 0, duration: 0.55 })
-          .from(".hero h1", { y: 30, autoAlpha: 0, duration: 0.9 }, "-=0.32")
+          .from(".hero h1", { y: 30, autoAlpha: 0, duration: 0.9 })
           .from(".hero-text > p", { y: 20, autoAlpha: 0, duration: 0.7 }, "-=0.55")
           .from(".hero-actions", { y: 18, autoAlpha: 0, duration: 0.6 }, "-=0.45")
           .from(".hero-proof", { y: 18, autoAlpha: 0, duration: 0.6 }, "-=0.4")
@@ -91,15 +90,6 @@ export default function ScrollStory() {
         });
 
         staggerIn(".filter-pill", ".menu-filter-nav", { y: 14, duration: 0.55, stagger: 0.05 });
-        staggerIn(".pricing-head > *", ".pricing-section", { y: 18, duration: 0.6 });
-        gsap.from(".table-responsive-box", {
-          y: 20,
-          autoAlpha: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: { trigger: first(".pricing-section"), start: "top 80%", once: true },
-        });
-
         staggerIn(".box-size-card", ".box-size-cards", { y: 18, duration: 0.6, stagger: 0.08 });
         staggerIn(".flavor-card", ".flavors-picker-grid", { y: 18, duration: 0.6, stagger: 0.05 });
         gsap.from(".builder-aside", {

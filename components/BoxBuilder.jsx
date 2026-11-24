@@ -52,12 +52,7 @@ export default function BoxBuilder() {
     <section id="box-builder" className="box-builder-section">
       <div className="container">
         <div className="section-header" data-index="03">
-          <span className="sub-tag"><i className="fas fa-magic" aria-hidden="true"></i> Interactive Experience</span>
           <h2 className="section-title">Build Your <em>Custom Brownie Box</em></h2>
-          <p className="section-desc">
-            Tailor your dream dessert box. Pick your preferred box size, mix and match your favorite brownie varieties,
-            and dispatch your order directly to WhatsApp!
-          </p>
         </div>
 
         <div className="builder-container">
@@ -132,7 +127,7 @@ export default function BoxBuilder() {
                   <span className="total-val">₹{box.price.toLocaleString("en-IN")}</span>
                 </div>
                 <button className="btn-box-checkout" type="button" onClick={order} disabled={!complete}>
-                  <i className="fab fa-whatsapp" aria-hidden="true"></i> Order Custom Box
+                  Order Custom Box
                 </button>
               </div>
             </div>

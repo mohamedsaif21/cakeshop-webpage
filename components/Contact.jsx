@@ -64,12 +64,7 @@ export default function Contact() {
     <section id="contact" className="contact-section">
       <div className="container contact-layout">
         <div className="contact-card">
-          <span className="sub-tag"><i className="fas fa-comments" aria-hidden="true"></i> Direct Concierge</span>
           <h3>Get In Touch with Shafa</h3>
-          <p>
-            Have a custom cake inquiry, celebration hamper requirement, or want to reserve your dessert batch in
-            advance? Reach out directly via WhatsApp or phone.
-          </p>
 
           <div className="contact-channels">
             <div className="channel-item">
@@ -104,7 +99,7 @@ export default function Contact() {
 
           <div className="social-tags">
             <a href="https://wa.me/919043569743" target="_blank" rel="noopener noreferrer" className="tag-pill">
-              <i className="fab fa-whatsapp icon-wa" aria-hidden="true"></i> WhatsApp Us
+              WhatsApp Us
             </a>
             <a
               href="#"
@@ -118,9 +113,6 @@ export default function Contact() {
 
         <div className="form-panel">
           <h3 className="panel-title">Pre-Order <em>Inquiry</em></h3>
-          <p className="panel-intro">
-            Fill out this form and choose whether to send it directly to WhatsApp for an instant response or email.
-          </p>
 
           <form onSubmit={sendEmail} aria-describedby={error ? "form-error" : undefined} noValidate>
             <div className="form-duo">
@@ -167,7 +159,7 @@ export default function Contact() {
 
             <div className="form-btn-row">
               <button type="button" className="btn-wa-submit" onClick={sendWhatsApp}>
-                <i className="fab fa-whatsapp" aria-hidden="true"></i> Send via WhatsApp
+                Send via WhatsApp
               </button>
               <button type="submit" className="btn-mail-submit">
                 <i className="fas fa-paper-plane" aria-hidden="true"></i> Send Email
