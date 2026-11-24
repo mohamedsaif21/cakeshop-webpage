@@ -7,9 +7,6 @@ export default function Reviews() {
         <div className="section-header" data-index="05">
           <span className="sub-tag"><i className="fas fa-heart" aria-hidden="true"></i> Genuine Words</span>
           <h2 className="section-title">Loved by Dessert <em>Connoisseurs</em></h2>
-          <p className="section-desc">
-            Nothing speaks louder than the honest reviews of clients who trust us with their celebrations and everyday sweet cravings.
-          </p>
         </div>
 
         <div className="reviews-grid">
