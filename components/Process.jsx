@@ -12,9 +12,6 @@ export default function Process() {
         <div className="section-header" data-index="04">
           <span className="sub-tag"><i className="fas fa-clipboard-check" aria-hidden="true"></i> Seamless Experience</span>
           <h2 className="section-title">How <em>Pre-Ordering</em> Works</h2>
-          <p className="section-desc">
-            Since our kitchen bakes purely small-batch goods with zero preservatives, pre-ordering guarantees peak freshness.
-          </p>
         </div>
 
         <ol className="steps-container">
