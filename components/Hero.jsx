@@ -3,9 +3,6 @@ export default function Hero() {
     <section id="home" className="hero">
       <div className="container hero-grid">
         <div className="hero-text">
-          <div className="hero-pill">
-            <i className="fas fa-certificate" aria-hidden="true"></i> Small-Batch Artisanal Baking &bull; Pre-Order Only
-          </div>
           <h1>
             Handcrafted Indulgence,
             <em>Baked With Passion.</em>
