@@ -18,7 +18,7 @@ export default function Hero() {
 
           <div className="hero-actions">
             <a href="#menu" className="btn-primary"><i className="fas fa-cookie-bite" aria-hidden="true"></i> Explore Menu</a>
-            <a href="#contact" className="btn-secondary"><i className="fab fa-whatsapp" aria-hidden="true"></i> Order Now</a>
+            <a href="#contact" className="btn-secondary">Order Now</a>
           </div>
 
           <div className="hero-proof">
