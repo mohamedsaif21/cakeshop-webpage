@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useCart } from "@/components/CartProvider";
 import { FILTERS, PRODUCTS, img } from "@/lib/data";
 import {
   MAX_QUANTITY,
@@ -14,6 +15,7 @@ import {
 function ProductCard({ p }) {
   const [idx, setIdx] = useState(0);
   const [quantity, setQuantity] = useState(MIN_QUANTITY);
+  const { addProduct } = useCart();
   const portion = p.portions[idx];
   const single = p.portions.length === 1;
   const featured = p.id === "sampler";
@@ -85,6 +87,14 @@ function ProductCard({ p }) {
             <span className="total-amount" key={`${portion.price}-${quantity}`}>{total}</span>
           </div>
         </div>
+        <button
+          type="button"
+          className="btn-add-cart"
+          onClick={() => addProduct(p, idx, quantity)}
+          disabled={soldOut}
+        >
+          <i className="fas fa-cart-plus" aria-hidden="true"></i> Add to Order
+        </button>
       </div>
     </article>
   );
