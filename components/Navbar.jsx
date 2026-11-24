@@ -73,7 +73,7 @@ export default function Navbar() {
 
           <div className="nav-actions">
             <a href={HELLO} target="_blank" rel="noopener noreferrer" className="btn-nav-order">
-              <i className="fab fa-whatsapp" aria-hidden="true"></i> Order on WhatsApp
+              Order on WhatsApp
             </a>
             <button
               ref={toggleRef}
@@ -119,7 +119,7 @@ export default function Navbar() {
         </div>
         <div>
           <a href={HELLO} target="_blank" rel="noopener noreferrer" className="btn-primary drawer-cta">
-            <i className="fab fa-whatsapp" aria-hidden="true"></i> Chat on WhatsApp
+            Chat on WhatsApp
           </a>
           <p className="drawer-contact">
             <i className="fas fa-phone-alt" aria-hidden="true"></i> +91 90435 69743 &middot; Pre-Order Only
