@@ -13,13 +13,9 @@ export default function Footer() {
         <div className="footer-mosaic">
           <div className="footer-brand-box">
             <h4>Shafa&apos;s Dessert House</h4>
-            <p>
-              Artisanal home-baked goodness crafted with love, pure butter, and premium cocoa. Bringing smiles to
-              celebrations across the city one fresh batch at a time.
-            </p>
             <div className="footer-socials">
               <a href="https://wa.me/919043569743" target="_blank" rel="noopener noreferrer" className="tag-pill">
-                <i className="fab fa-whatsapp icon-wa" aria-hidden="true"></i> WhatsApp
+                WhatsApp
               </a>
               <a href="tel:+919043569743" className="tag-pill">
                 <i className="fas fa-phone-alt" aria-hidden="true"></i> Call Us
