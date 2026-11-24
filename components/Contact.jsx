@@ -64,7 +64,6 @@ export default function Contact() {
     <section id="contact" className="contact-section">
       <div className="container contact-layout">
         <div className="contact-card">
-          <span className="sub-tag"><i className="fas fa-comments" aria-hidden="true"></i> Direct Concierge</span>
           <h3>Get In Touch with Shafa</h3>
 
           <div className="contact-channels">
