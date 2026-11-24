@@ -1,5 +1,7 @@
 import "./globals.css";
 import UIProvider from "@/components/UIProvider";
+import CartProvider from "@/components/CartProvider";
+import Cart from "@/components/Cart";
 
 export const metadata = {
   title: "Shafa's Dessert House | Artisanal Brownies & Bespoke Desserts",
@@ -24,7 +26,12 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <UIProvider>{children}</UIProvider>
+        <UIProvider>
+          <CartProvider>
+            {children}
+            <Cart />
+          </CartProvider>
+        </UIProvider>
       </body>
     </html>
   );

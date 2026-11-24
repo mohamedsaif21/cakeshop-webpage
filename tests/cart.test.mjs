@@ -123,7 +123,7 @@ test("wires the cart UI into the menu and app shell", () => {
 
   assert.ok(menu.includes("btn-add-cart"));
   assert.ok(menu.includes("addProduct(p, idx, quantity)"));
-  assert.ok(cartUi.includes("cart-floating"));
+  assert.match(cartUi, /\{count > 0 && \(\s*<button[\s\S]*?className="cart-floating"/);
   assert.ok(cartUi.includes("cart-mobile-bar"));
   assert.ok(cartUi.includes("View Order"));
   assert.ok(cartUi.includes("cart-panel"));
