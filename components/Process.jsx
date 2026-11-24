@@ -10,7 +10,6 @@ export default function Process() {
     <section id="how-to-order" className="process-section">
       <div className="container">
         <div className="section-header" data-index="04">
-          <span className="sub-tag"><i className="fas fa-clipboard-check" aria-hidden="true"></i> Seamless Experience</span>
           <h2 className="section-title">How <em>Pre-Ordering</em> Works</h2>
         </div>
 
@@ -28,7 +27,6 @@ export default function Process() {
 
         <div className="savor-card">
           <div className="savor-text">
-            <span className="sub-tag"><i className="fas fa-lightbulb" aria-hidden="true"></i> Chef&apos;s Secrets</span>
             <h3>How to Savor Your Treats for Maximum Pleasure</h3>
             <p>
               Brownies and artisanal cakes taste vastly different based on how they are enjoyed. Here is our secret guide

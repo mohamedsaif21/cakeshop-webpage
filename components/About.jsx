@@ -19,7 +19,6 @@ export default function About() {
 
         <div className="about-content">
           <div className="section-header" data-index="01">
-            <span className="sub-tag"><i className="fas fa-cookie" aria-hidden="true"></i> Our Heartfelt Story</span>
             <h2>Crafting Sweet Moments <em>from Our Kitchen to Yours</em></h2>
           </div>
           <p>
