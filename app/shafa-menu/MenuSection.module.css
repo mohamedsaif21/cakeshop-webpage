@@ -31,7 +31,8 @@
   backdrop-filter: blur(6px); opacity: 0; animation: up 0.55s ease forwards; animation-delay: calc(var(--i) * 60ms);
 }
 @keyframes up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-.thumb { flex: none; width: 84px; border-radius: 16px; display: grid; place-items: center; font-size: 2.4rem; background: radial-gradient(circle at 30% 25%, var(--c-gold), var(--c-toffee) 60%, var(--c-choc)); }
+.thumb { position: relative; overflow: hidden; flex: none; width: 84px; aspect-ratio: 1; border-radius: 16px; display: grid; place-items: center; font-size: 2.4rem; background: radial-gradient(circle at 30% 25%, var(--c-gold), var(--c-toffee) 60%, var(--c-choc)); }
+.thumbImage { object-fit: cover; border-radius: inherit; }
 .info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
 .info h3 { font-family: var(--font-display), serif; font-size: 1.3rem; line-height: 1.15; }
 .seg { display: inline-flex; align-self: flex-start; padding: 3px; border-radius: 99px; background: rgba(148, 93, 28, 0.15); }

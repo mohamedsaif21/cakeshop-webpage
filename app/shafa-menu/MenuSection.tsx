@@ -30,6 +30,18 @@ const ITEMS: Item[] = [
   { id: "plum-cake", name: "Plum Cake", cat: "cakes", half: 449, full: 849 },
 ];
 
+const PHOTOS: Record<string, string> = {
+  "normal-brownie": "/assest/Menu Highlights/The Best Brownies Ever.jpeg",
+  "triple-choc-brownies": "/assest/Menu Highlights/Ultimate Triple Layer Brownies Recipe.jpeg",
+  "blonde-brownies": "/assest/Menu Highlights/Haole Brownies AKA Blonde Brownies.jpeg",
+  "triple-choc-blondies": "/assest/Menu Highlights/12 Amazing Brownies That Will Make You Drool.jpeg",
+  "fruits-nuts-brownie": "/assest/Menu Highlights/Bombshell Oreo Brownies.jpeg",
+  "nutella-brownies": "/assest/Menu Highlights/Soft and Gooey Nutella Brownies - Strawberry in the Desert.jpeg",
+  "dream-cake": "/assest/Menu Highlights/Tin Can Chocolate Dream Cake Filipino Recipe.jpeg",
+  "red-velvet-cake": "/assest/Menu Highlights/Red Velvet Cake.jpeg",
+  "white-forest-cake": "/assest/Menu Highlights/White Forest Cake.jpeg",
+};
+
 const TABS: { id: "all" | Cat; label: string }[] = [
   { id: "all", label: "All" },
   { id: "brownies", label: "Brownies" },
@@ -136,7 +148,13 @@ export default function MenuSection() {
           const qty = cart[key] || 0;
           return (
             <article key={item.id} className={s.card} style={{ "--i": idx } as React.CSSProperties}>
-              <div className={s.thumb} aria-hidden>{item.cat === "cakes" ? "🍰" : "🍫"}</div>
+              <div className={s.thumb} aria-hidden>
+                {PHOTOS[item.id] ? (
+                  <Image src={PHOTOS[item.id]} alt="" fill sizes="(max-width: 380px) 64px, 84px" className={s.thumbImage} />
+                ) : (
+                  item.cat === "cakes" ? "🍰" : "🍫"
+                )}
+              </div>
               <div className={s.info}>
                 <h3>{item.name}</h3>
                 <div className={s.seg} role="group" aria-label={`${item.name} size`}>
