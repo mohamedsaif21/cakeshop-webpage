@@ -1,0 +1,28 @@
+.shafa-menu {
+  --choc: #4A1F02;
+  --caramel: #CE913B;
+  --toffee: #945D1C;
+  --dark-caramel: #744213;
+  --cream: #FFF4E0;
+
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--cream);
+  color: var(--choc);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shafa-menu :where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.shafa-menu :where(section) {
+  padding: 0;
+  scroll-margin-top: 0;
+}
+
+.shafa-menu ::selection {
+  background: var(--caramel);
+  color: var(--cream);
+}
