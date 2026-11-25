@@ -10,3 +10,7 @@ pnpm-debug.log*
 .env
 .env.local
 .env.*.local
+
+/public/assest/img/references/
+/.claude/
+/CLAUDE.md

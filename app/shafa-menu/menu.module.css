@@ -1,0 +1,20 @@
+.menu {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.ready {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu {
+    transition-duration: 0.01s;
+  }
+}
