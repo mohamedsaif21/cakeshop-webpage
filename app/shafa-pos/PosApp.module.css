@@ -1,0 +1,1143 @@
+/* ====== Outer Dark Chocolate Shell (Image 2 Frame) ====== */
+.shell {
+  min-height: 100dvh;
+  background: var(--pos-choc-rail);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ====== Left Vertical Icon Rail (Desktop/Tablet) ====== */
+.rail {
+  background: var(--pos-choc-rail);
+  color: var(--pos-cream);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  gap: 10px;
+}
+
+.railBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--pos-cream);
+}
+
+.railLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--pos-gold);
+  object-fit: cover;
+  flex: none;
+}
+
+.railMobileTitle {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--pos-cream);
+}
+
+.railNav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.railNav::-webkit-scrollbar {
+  display: none;
+}
+
+.railBtn {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(255, 244, 224, 0.72);
+  display: grid;
+  place-items: center;
+  flex: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s var(--pos-ease), color 0.18s var(--pos-ease), border-color 0.18s var(--pos-ease);
+}
+
+.railBtn:hover {
+  background: rgba(255, 244, 224, 0.08);
+  color: var(--pos-cream);
+}
+
+.railBtnActive {
+  background: var(--pos-gold);
+  color: var(--pos-choc-deep);
+  box-shadow: 0 6px 16px rgba(217, 154, 61, 0.32);
+}
+
+.railBtnActive:hover {
+  background: var(--pos-gold);
+  color: var(--pos-choc-deep);
+}
+
+.railBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--pos-radius-pill);
+  background: var(--pos-choc-deep);
+  color: var(--pos-gold);
+  border: 1.5px solid var(--pos-gold);
+  font-size: 0.62rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.railBottom {
+  display: none;
+}
+
+/* ====== Inner Rounded Bright Workspace Container (Image 2 Surface) ====== */
+.workspaceFrame {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  padding: 0 8px 8px;
+}
+
+.workspace {
+  flex: 1;
+  min-width: 0;
+  background: var(--pos-cream-soft);
+  border-radius: 22px;
+  box-shadow: var(--pos-shadow-shell);
+  border: 1px solid rgba(255, 244, 224, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ====== Workspace Top Header Bar ====== */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--pos-surface);
+  border-bottom: 1px solid var(--pos-border);
+}
+
+.topLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pageTitle {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--pos-choc-deep);
+}
+
+.billTag {
+  padding: 4px 10px;
+  border-radius: var(--pos-radius-pill);
+  background: var(--pos-tray);
+  border: 1px solid var(--pos-border-strong);
+  color: var(--pos-dark-caramel);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.globalSearchWrap {
+  position: relative;
+  flex: 1 1 240px;
+  max-width: 380px;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 13px;
+  color: var(--pos-toffee);
+  pointer-events: none;
+}
+
+.globalSearch {
+  width: 100%;
+  height: 40px;
+  padding: 0 58px 0 38px;
+  border-radius: var(--pos-radius-pill);
+  border: 1px solid var(--pos-border-strong);
+  background: var(--pos-cream-soft);
+  color: var(--pos-choc-deep);
+  font: 400 0.86rem var(--font-body), sans-serif;
+}
+
+.globalSearch:focus {
+  outline: none;
+  background: var(--pos-surface);
+  border-color: var(--pos-caramel);
+}
+
+.kbdHint {
+  position: absolute;
+  right: 10px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  color: var(--pos-choc-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.topRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topIconBtn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--pos-border);
+  background: var(--pos-cream-soft);
+  color: var(--pos-choc);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.topIconDot {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pos-gold);
+}
+
+.staffChip {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border-radius: var(--pos-radius-pill);
+  border: 1px solid var(--pos-border);
+  background: var(--pos-cream-soft);
+}
+
+.staffAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--pos-gold);
+}
+
+.staffMeta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.staffMeta strong {
+  font-size: 0.78rem;
+  color: var(--pos-choc-deep);
+}
+
+.staffMeta small {
+  font-size: 0.66rem;
+  color: var(--pos-choc-muted);
+}
+
+/* ====== Billing Split Layout (Image 1 Catalog + Right Order Panel) ====== */
+.billingLayout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.catalogPane {
+  min-width: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+/* Category & Filter Strip (Image 1 Top of Food Area) */
+.catalogToolbar {
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  border-radius: var(--pos-radius-card);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--pos-shadow-sm);
+}
+
+.catRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.catTabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: none;
+}
+
+.catTabs::-webkit-scrollbar {
+  display: none;
+}
+
+.catTab {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--pos-radius-pill);
+  border: 1px solid var(--pos-border);
+  background: var(--pos-cream-soft);
+  color: var(--pos-choc);
+  font: 600 0.82rem var(--font-body), sans-serif;
+  cursor: pointer;
+  transition: all 0.18s var(--pos-ease);
+}
+
+.catTab:hover {
+  border-color: var(--pos-caramel);
+}
+
+.catTabActive {
+  background: var(--pos-choc-deep);
+  border-color: var(--pos-choc-deep);
+  color: var(--pos-gold);
+}
+
+.catCount {
+  font-size: 0.72rem;
+  opacity: 0.78;
+}
+
+.filterTools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sizeFilterSelect {
+  padding: 7px 12px;
+  border-radius: var(--pos-radius-pill);
+  border: 1px solid var(--pos-border-strong);
+  background: var(--pos-surface);
+  color: var(--pos-choc);
+  font: 600 0.78rem var(--font-body), sans-serif;
+  cursor: pointer;
+}
+
+/* ====== Food Grid (Image 1 Exact Card Alignment) ====== */
+.foodGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding-bottom: 84px;
+}
+
+.foodCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: var(--pos-radius-card);
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  box-shadow: var(--pos-shadow-card);
+  transition: transform 0.16s var(--pos-ease), border-color 0.18s var(--pos-ease), box-shadow 0.18s var(--pos-ease);
+}
+
+.foodCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--pos-caramel);
+  box-shadow: 0 8px 20px rgba(52, 21, 1, 0.1);
+}
+
+.foodCardInBill {
+  border-color: var(--pos-gold);
+  box-shadow: 0 0 0 1px rgba(217, 154, 61, 0.35), var(--pos-shadow-card);
+}
+
+.foodThumbBtn {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  padding: 0;
+  border-radius: var(--pos-radius-media);
+  overflow: hidden;
+  background: var(--pos-tray);
+  cursor: pointer;
+}
+
+.foodThumbImg {
+  object-fit: cover;
+  transition: transform 0.25s var(--pos-ease);
+}
+
+.foodCard:hover .foodThumbImg {
+  transform: scale(1.04);
+}
+
+.foodPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 30% 25%, rgba(206, 145, 59, 0.34), rgba(52, 21, 1, 0.9));
+  color: var(--pos-cream);
+}
+
+.qtyPillOverlay {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: var(--pos-radius-pill);
+  background: var(--pos-choc-deep);
+  color: var(--pos-gold);
+  border: 1.5px solid var(--pos-gold);
+  font-size: 0.74rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.foodBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 9px;
+}
+
+.foodTitleBtn {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.foodTitle {
+  font-family: var(--font-body), sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--pos-choc-deep);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sizePills {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 2px;
+  border-radius: var(--pos-radius-pill);
+  background: var(--pos-surface-muted);
+  border: 1px solid var(--pos-border);
+}
+
+.sizePill {
+  border: 0;
+  background: transparent;
+  padding: 3px 10px;
+  border-radius: var(--pos-radius-pill);
+  font: 600 0.72rem var(--font-body), sans-serif;
+  color: var(--pos-choc-muted);
+  cursor: pointer;
+}
+
+.sizePillActive {
+  background: var(--pos-choc-deep);
+  color: var(--pos-gold);
+}
+
+.foodFoot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.foodPrice {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--pos-choc-deep);
+}
+
+.addCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--pos-border-strong);
+  background: var(--pos-cream);
+  color: var(--pos-choc-deep);
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.16s var(--pos-ease), color 0.16s var(--pos-ease), transform 0.12s var(--pos-ease);
+}
+
+.addCircle:hover {
+  background: var(--pos-gold);
+  border-color: var(--pos-gold);
+}
+
+.addCircle:active {
+  transform: scale(0.9);
+}
+
+/* ====== Right Current Bill Panel (Image 1 + Image 2) ====== */
+.billBackdrop {
+  display: none;
+}
+
+.billPane {
+  display: none;
+  background: var(--pos-surface);
+  border-left: 1px solid var(--pos-border);
+  flex-direction: column;
+  min-height: 0;
+}
+
+.billPaneMobileOpen {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  border-left: 0;
+}
+
+.billHead {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--pos-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.billHeadLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.billTitle {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--pos-choc-deep);
+}
+
+.tableSelect {
+  padding: 4px 10px;
+  border-radius: var(--pos-radius-pill);
+  border: 1px solid rgba(31, 157, 85, 0.35);
+  background: var(--pos-green-soft);
+  color: #126B39;
+  font: 700 0.74rem var(--font-body), sans-serif;
+  cursor: pointer;
+}
+
+.billHeadActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.resetOrderBtn {
+  padding: 5px 10px;
+  border-radius: var(--pos-radius-pill);
+  border: 1px solid var(--pos-border-strong);
+  background: var(--pos-cream-soft);
+  color: var(--pos-choc);
+  font: 600 0.74rem var(--font-body), sans-serif;
+  cursor: pointer;
+}
+
+.resetOrderBtn:hover {
+  background: var(--pos-red-soft);
+  color: var(--pos-red);
+  border-color: rgba(200, 62, 43, 0.3);
+}
+
+.closeMobileBill {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--pos-border);
+  background: var(--pos-cream-soft);
+  color: var(--pos-choc);
+  cursor: pointer;
+}
+
+.billLines {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.billEmpty {
+  margin: auto 0;
+  text-align: center;
+  padding: 28px 14px;
+  color: var(--pos-choc-muted);
+}
+
+.billEmpty strong {
+  display: block;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 1.25rem;
+  color: var(--pos-choc);
+  margin-bottom: 4px;
+}
+
+.billLine {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 9px;
+  border-radius: 13px;
+  background: var(--pos-cream-soft);
+  border: 1px solid var(--pos-border);
+}
+
+.lineThumb {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--pos-tray);
+}
+
+.lineInfo strong {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--pos-choc-deep);
+  line-height: 1.2;
+}
+
+.lineInfo small {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--pos-choc-muted);
+  margin-top: 2px;
+}
+
+.lineControls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px;
+  border-radius: var(--pos-radius-pill);
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border-strong);
+}
+
+.stepper button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--pos-tray);
+  color: var(--pos-choc-deep);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stepper button:hover {
+  background: var(--pos-gold);
+}
+
+.stepper span {
+  min-width: 18px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.trashBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--pos-red-soft);
+  color: var(--pos-red);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.billExtras {
+  padding: 10px 16px;
+  border-top: 1px dashed var(--pos-border-strong);
+  background: var(--pos-cream-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.noteToggleBtn {
+  align-self: flex-start;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--pos-dark-caramel);
+  font: 600 0.8rem var(--font-body), sans-serif;
+  cursor: pointer;
+}
+
+.customerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.miniInput {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--pos-border-strong);
+  background: var(--pos-surface);
+  color: var(--pos-choc-deep);
+  font: 400 0.8rem var(--font-body), sans-serif;
+}
+
+.billSummary {
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--pos-border);
+  background: var(--pos-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adjRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.adjField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: var(--pos-cream-soft);
+  border: 1px solid var(--pos-border);
+  font-size: 0.76rem;
+  color: var(--pos-choc-muted);
+}
+
+.adjField input {
+  width: 64px;
+  border: 0;
+  background: transparent;
+  text-align: right;
+  font: 700 0.8rem var(--font-body), sans-serif;
+  color: var(--pos-choc-deep);
+}
+
+.adjField input:focus {
+  outline: none;
+}
+
+.sumLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  color: var(--pos-choc-muted);
+}
+
+.sumTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 6px;
+  border-top: 1px dashed var(--pos-border-strong);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--pos-choc-deep);
+}
+
+.payRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.payPill {
+  padding: 6px 4px;
+  border-radius: 10px;
+  border: 1px solid var(--pos-border-strong);
+  background: var(--pos-cream-soft);
+  color: var(--pos-choc);
+  font: 600 0.75rem var(--font-body), sans-serif;
+  cursor: pointer;
+}
+
+.payPillActive {
+  background: var(--pos-choc-deep);
+  border-color: var(--pos-choc-deep);
+  color: var(--pos-gold);
+}
+
+.chargeBtn {
+  width: 100%;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--pos-gold);
+  color: var(--pos-choc-deep);
+  font: 700 0.96rem var(--font-body), sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(217, 154, 61, 0.34);
+  transition: background 0.16s var(--pos-ease);
+}
+
+.chargeBtn:hover:not(:disabled) {
+  background: var(--pos-caramel);
+}
+
+.chargeBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.draftBtn {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--pos-border-strong);
+  background: var(--pos-cream-soft);
+  color: var(--pos-choc);
+  font: 600 0.84rem var(--font-body), sans-serif;
+  cursor: pointer;
+}
+
+.draftBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ====== Mobile/Tablet Floating Bill Trigger ====== */
+.mobileBillBar {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(calc(100% - 32px), 440px);
+  padding: 13px 18px;
+  border: 1.5px solid var(--pos-gold);
+  border-radius: var(--pos-radius-pill);
+  background: var(--pos-choc-deep);
+  color: var(--pos-gold);
+  font: 700 0.94rem var(--font-body), sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 12px 30px rgba(18, 7, 0, 0.45);
+  cursor: pointer;
+}
+
+/* ====== Secondary Module Views (Orders, Tables, Menu, etc.) ====== */
+.moduleWrap {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.statCard {
+  padding: 16px;
+  border-radius: var(--pos-radius-card);
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  box-shadow: var(--pos-shadow-sm);
+}
+
+.statCard small {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--pos-choc-muted);
+  margin-bottom: 4px;
+}
+
+.statCard strong {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 1.75rem;
+  color: var(--pos-choc-deep);
+}
+
+.panelCard {
+  padding: 18px;
+  border-radius: var(--pos-radius-card);
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+  box-shadow: var(--pos-shadow-sm);
+}
+
+.panelCard h3 {
+  font-size: 1.35rem;
+  margin-bottom: 6px;
+}
+
+.panelSub {
+  font-size: 0.88rem;
+  color: var(--pos-choc-muted);
+  margin-bottom: 14px;
+}
+
+.tableGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.tableTile {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--pos-border-strong);
+  background: var(--pos-cream-soft);
+  color: var(--pos-choc-deep);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tableTileActive {
+  background: var(--pos-choc-deep);
+  border-color: var(--pos-choc-deep);
+  color: var(--pos-cream);
+}
+
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.orderRow {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--pos-border);
+  background: var(--pos-cream-soft);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.statusPill {
+  padding: 3px 9px;
+  border-radius: var(--pos-radius-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.statusCharged {
+  background: var(--pos-green-soft);
+  color: #126B39;
+}
+
+.statusDraft {
+  background: rgba(206, 145, 59, 0.22);
+  color: var(--pos-dark-caramel);
+}
+
+/* ====== Receipt Modal ====== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(18, 7, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.modalCard {
+  width: min(100%, 420px);
+  background: var(--pos-surface);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: var(--pos-shadow-shell);
+  border: 1px solid var(--pos-border-strong);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modalHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modalHead h3 {
+  font-size: 1.5rem;
+}
+
+.waBtn {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--pos-green);
+  color: #fff;
+  font: 700 0.9rem var(--font-body), sans-serif;
+  cursor: pointer;
+}
+
+/* ====== Responsive Breakpoints ====== */
+@media (min-width: 640px) {
+  .foodGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .staffChip {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    flex-direction: row;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .rail {
+    width: 74px;
+    flex-direction: column;
+    padding: 16px 10px;
+  }
+
+  .railMobileTitle {
+    display: none;
+  }
+
+  .railNav {
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: visible;
+    gap: 8px;
+  }
+
+  .railBottom {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .workspaceFrame {
+    padding: 12px 12px 12px 0;
+  }
+
+  .billingLayout {
+    grid-template-columns: 1fr 380px;
+  }
+
+  .foodGrid {
+    padding-bottom: 12px;
+  }
+
+  .billPane {
+    display: flex;
+  }
+
+  .closeMobileBill,
+  .mobileBillBar {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .foodGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+}

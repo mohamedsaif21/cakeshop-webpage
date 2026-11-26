@@ -1,0 +1,60 @@
+.shafa-pos {
+  --pos-choc-rail: #2B1101;
+  --pos-choc-deep: #341501;
+  --pos-choc: #4A1F02;
+  --pos-choc-muted: #6B4429;
+  --pos-caramel: #CE913B;
+  --pos-gold: #D99A3D;
+  --pos-toffee: #945D1C;
+  --pos-dark-caramel: #744213;
+
+  --pos-cream: #FFF4E0;
+  --pos-cream-soft: #FFF9EE;
+  --pos-surface: #FFFDFA;
+  --pos-surface-muted: #F8EFE0;
+  --pos-tray: #FBF2E2;
+
+  --pos-green: #1F9D55;
+  --pos-green-soft: rgba(31, 157, 85, 0.14);
+  --pos-red: #C83E2B;
+  --pos-red-soft: rgba(200, 62, 43, 0.12);
+
+  --pos-border: rgba(148, 93, 28, 0.16);
+  --pos-border-strong: rgba(148, 93, 28, 0.32);
+
+  --pos-radius-shell: 26px;
+  --pos-radius-card: 16px;
+  --pos-radius-media: 12px;
+  --pos-radius-pill: 999px;
+
+  --pos-shadow-sm: 0 2px 8px rgba(52, 21, 1, 0.05);
+  --pos-shadow-card: 0 4px 14px rgba(52, 21, 1, 0.06);
+  --pos-shadow-shell: 0 18px 48px rgba(18, 7, 0, 0.42);
+  --pos-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  min-height: 100dvh;
+  background: var(--pos-choc-rail);
+  color: var(--pos-choc-deep);
+  font-family: var(--font-body), "Plus Jakarta Sans", system-ui, sans-serif;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shafa-pos :where(h1, h2, h3, h4) {
+  font-family: var(--font-serif), "Cormorant Garamond", Georgia, serif;
+}
+
+.shafa-pos :where(section) {
+  padding: 0;
+  scroll-margin-top: 0;
+}
+
+.shafa-pos :where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--pos-gold);
+  outline-offset: 2px;
+}
+
+.shafa-pos ::selection {
+  background: var(--pos-caramel);
+  color: var(--pos-cream);
+}
