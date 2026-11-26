@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import CartOrderSheet from "./CartOrderSheet";
 import ProductCustomizerSheet from "./ProductCustomizerSheet";
 import s from "./MenuSection.module.css";
@@ -13,7 +13,6 @@ import {
   LOGO_SRC,
   MAX_ITEM_QTY,
   PREFS_STORAGE_KEY,
-  PROMO_POSTERS,
   STORAGE_KEY,
   WHATSAPP_NUMBER,
   buildWhatsAppOrderText,
@@ -24,18 +23,59 @@ import {
   type ItemCustomization,
   type MenuItem,
   type Size,
-  type SortMode,
 } from "./menuData";
+
+const SEARCH_SUGGESTIONS = [
+  "Search brownies...",
+  "Find your favourite cake...",
+  "Craving something chocolatey?",
+  "Search dessert treats...",
+  "Try our Dream Cake...",
+];
+
+function AnimatedSearchPlaceholder() {
+  const [suggestionIdx, setSuggestionIdx] = useState(0);
+  const [suggestionText, setSuggestionText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const target = SEARCH_SUGGESTIONS[suggestionIdx];
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setSuggestionText(target);
+      return undefined;
+    }
+    if (!deleting && suggestionText === target) {
+      const pause = window.setTimeout(() => setDeleting(true), 1800);
+      return () => window.clearTimeout(pause);
+    }
+    if (deleting && suggestionText === "") {
+      setDeleting(false);
+      setSuggestionIdx((i) => (i + 1) % SEARCH_SUGGESTIONS.length);
+      return undefined;
+    }
+    const timer = window.setTimeout(
+      () => {
+        setSuggestionText((text) =>
+          deleting ? target.slice(0, text.length - 1) : target.slice(0, text.length + 1)
+        );
+      },
+      deleting ? 45 : 85
+    );
+    return () => window.clearTimeout(timer);
+  }, [suggestionIdx, suggestionText, deleting]);
+
+  return (
+    <span className={s.searchPlaceholder} aria-hidden="true">
+      {suggestionText}
+      <span className={s.searchCaret} />
+    </span>
+  );
+}
 
 export default function MenuSection() {
   const [tab, setTab] = useState<FilterTab>("all");
   const [under500Only, setUnder500Only] = useState(false);
-  const [sortBy, setSortBy] = useState<SortMode>("featured");
   const [search, setSearch] = useState("");
-
-  const [promoIdx, setPromoIdx] = useState(0);
-  const [promoPaused, setPromoPaused] = useState(false);
-  const swipeStartX = useRef<number | null>(null);
 
   const [sizes, setSizes] = useState<Record<string, Size>>({});
   const [cart, setCart] = useState<Record<string, number>>({});
@@ -79,34 +119,6 @@ export default function MenuSection() {
       document.body.style.overflow = prev;
     };
   }, [cartOpen, customizingItem]);
-
-  useEffect(() => {
-    if (promoPaused || PROMO_POSTERS.length <= 1) return undefined;
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return undefined;
-    }
-    const timer = window.setInterval(() => {
-      setPromoIdx((i) => (i + 1) % PROMO_POSTERS.length);
-    }, 4500);
-    return () => window.clearInterval(timer);
-  }, [promoPaused]);
-
-  const stepPromo = useCallback((delta: number) => {
-    setPromoIdx((i) => (i + delta + PROMO_POSTERS.length) % PROMO_POSTERS.length);
-  }, []);
-
-  const handlePromoPointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    swipeStartX.current = e.clientX;
-  };
-
-  const handlePromoPointerUp = (e: PointerEvent<HTMLDivElement>) => {
-    if (swipeStartX.current === null) return;
-    const delta = e.clientX - swipeStartX.current;
-    swipeStartX.current = null;
-    if (Math.abs(delta) >= 36) {
-      stepPromo(delta < 0 ? 1 : -1);
-    }
-  };
 
   const change = useCallback((key: string, d: number) => {
     setCart((c) => {
@@ -177,14 +189,8 @@ export default function MenuSection() {
       return true;
     });
 
-    if (sortBy === "price-asc") {
-      return [...filtered].sort((a, b) => a.half - b.half);
-    }
-    if (sortBy === "price-desc") {
-      return [...filtered].sort((a, b) => b.half - a.half);
-    }
     return filtered;
-  }, [tab, under500Only, search, sortBy]);
+  }, [tab, under500Only, search]);
 
   const sendOrder = () => {
     if (!lines.length) return;
@@ -195,7 +201,6 @@ export default function MenuSection() {
   const resetFilters = () => {
     setTab("all");
     setUnder500Only(false);
-    setSortBy("featured");
     setSearch("");
   };
 
@@ -244,11 +249,11 @@ export default function MenuSection() {
             <input
               type="search"
               className={s.searchInput}
-              placeholder="Search brownies, dream cake, Nutella, blondies..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="Search desserts"
             />
+            {!search && <AnimatedSearchPlaceholder />}
             {search && (
               <button type="button" className={s.searchClear} onClick={() => setSearch("")} aria-label="Clear search">
                 ✕
@@ -257,54 +262,6 @@ export default function MenuSection() {
           </div>
         </div>
       </div>
-
-      {/* Images-Only Featured Promotional Poster Slider */}
-      <section className={s.promoSection} aria-label="Promotional posters">
-        <div className="shafa-container">
-          <div
-            className={s.promoViewport}
-            onMouseEnter={() => setPromoPaused(true)}
-            onMouseLeave={() => setPromoPaused(false)}
-            onFocusCapture={() => setPromoPaused(true)}
-            onBlurCapture={() => setPromoPaused(false)}
-            onPointerDown={handlePromoPointerDown}
-            onPointerUp={handlePromoPointerUp}
-          >
-            <div
-              className={s.promoTrack}
-              style={{ transform: `translateX(-${promoIdx * 100}%)` }}
-            >
-              {PROMO_POSTERS.map((poster, i) => (
-                <div key={poster.id} className={s.promoSlide}>
-                  <Image
-                    src={poster.photo}
-                    alt={poster.alt}
-                    fill
-                    sizes="(max-width: 639px) 100vw, 1200px"
-                    className={s.promoImg}
-                    priority={i === 0}
-                    draggable={false}
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className={s.promoDots} role="tablist" aria-label="Select promotional poster">
-              {PROMO_POSTERS.map((poster, i) => (
-                <button
-                  key={poster.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={promoIdx === i}
-                  aria-label={`Poster ${i + 1}`}
-                  className={`${s.promoDot} ${promoIdx === i ? s.promoDotActive : ""}`}
-                  onClick={() => setPromoIdx(i)}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Visual Category Strip */}
       <section className={s.categorySection} aria-label="Dessert categories">
@@ -341,8 +298,8 @@ export default function MenuSection() {
         </div>
       </section>
 
-      {/* Sticky Filter & Sort Pill Bar */}
-      <nav className={s.filterSticky} aria-label="Filter and sort menu">
+      {/* Sticky Category Filter Bar */}
+      <nav className={s.filterSticky} aria-label="Filter menu">
         <div className="shafa-container">
           <div className={s.filterRow}>
             <div className={s.pillGroup}>
@@ -366,17 +323,6 @@ export default function MenuSection() {
                 Under ₹500
               </button>
             </div>
-
-            <select
-              className={s.sortSelect}
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortMode)}
-              aria-label="Sort desserts"
-            >
-              <option value="featured">Sort: Featured</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-            </select>
           </div>
         </div>
       </nav>

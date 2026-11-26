@@ -136,8 +136,34 @@
   transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
 }
 
-.searchInput::placeholder {
+.searchPlaceholder {
+  position: absolute;
+  left: 44px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: calc(100% - 76px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: rgba(255, 244, 224, 0.62);
+  font: 400 0.94rem var(--font-body), sans-serif;
+  pointer-events: none;
+}
+
+.searchCaret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: var(--honey-gold);
+  animation: caretBlink 1s steps(1, end) infinite;
+}
+
+@keyframes caretBlink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .searchInput:focus {
@@ -158,75 +184,6 @@
   display: grid;
   place-items: center;
   cursor: pointer;
-}
-
-/* ====== Images-Only Promotional Poster Slider ====== */
-.promoSection {
-  margin-bottom: var(--section-gap);
-}
-
-.promoViewport {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  background: var(--choc-deep);
-  border: 1px solid var(--border-warm);
-  box-shadow: var(--shadow-card);
-  touch-action: pan-y;
-  user-select: none;
-}
-
-.promoTrack {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.55s var(--ease);
-  will-change: transform;
-}
-
-.promoSlide {
-  position: relative;
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
-}
-
-.promoImg {
-  object-fit: cover;
-  pointer-events: none;
-}
-
-.promoDots {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  transform: translateX(-50%);
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: var(--radius-pill);
-  background: rgba(52, 21, 1, 0.52);
-  backdrop-filter: blur(6px);
-}
-
-.promoDot {
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-pill);
-  border: 0;
-  padding: 0;
-  background: rgba(255, 244, 224, 0.45);
-  cursor: pointer;
-  transition: width 0.22s var(--ease), background 0.22s var(--ease);
-}
-
-.promoDotActive {
-  width: 22px;
-  background: var(--honey-gold);
 }
 
 /* ====== Visual Category Cards Strip ====== */
@@ -330,7 +287,7 @@
   opacity: 0.72;
 }
 
-/* ====== Sticky Filter & Sort Pill Bar ====== */
+/* ====== Sticky Category Filter Bar ====== */
 .filterSticky {
   position: sticky;
   top: var(--header-height);
@@ -342,9 +299,7 @@
 .filterRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
-  flex-wrap: wrap;
 }
 
 .pillGroup {
@@ -381,17 +336,6 @@
   background: var(--choc);
   border-color: var(--choc);
   color: var(--honey-gold);
-}
-
-.sortSelect {
-  flex: none;
-  padding: 7px 12px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--choc);
-  font: 500 0.8rem var(--font-body), sans-serif;
-  cursor: pointer;
 }
 
 /* ====== Menu Product Grid ====== */
@@ -1481,11 +1425,6 @@
 }
 
 @media (min-width: 640px) {
-  .promoViewport {
-    aspect-ratio: 21 / 9;
-    max-height: 360px;
-  }
-
   .card {
     padding: 12px;
   }
@@ -1538,7 +1477,7 @@
     transition: none;
   }
 
-  .promoTrack {
-    transition: none;
+  .searchCaret {
+    animation: none;
   }
 }
