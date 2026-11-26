@@ -1,5 +1,3 @@
-import type { Invoice, LineItem } from "@/lib/invoice/types";
-
 export type PosSection =
   | "dashboard"
   | "menu"
@@ -37,7 +35,6 @@ export type BillLine = {
 
 export type PosOrderRecord = {
   id: string;
-  billNumber: string;
   createdAt: string;
   status: "charged" | "draft";
   tableLabel: string;
@@ -166,29 +163,3 @@ export const POS_CATEGORIES: { id: PosCategory; label: string; count: number }[]
   { id: "blondies", label: "Blondies", count: POS_PRODUCTS.filter((p) => p.isBlondie).length },
   { id: "cakes", label: "Cakes", count: POS_PRODUCTS.filter((p) => p.cat === "cakes").length },
 ];
-
-export function orderToInvoice(order: PosOrderRecord): Invoice {
-  const items: LineItem[] = order.lines.map((l) => ({
-    id: l.key,
-    name: `${l.name} (${l.size === "half" ? "Half" : "Full"})`,
-    price: l.unitPrice,
-    qty: l.qty,
-  }));
-
-  return {
-    number: order.billNumber,
-    date: order.createdAt.slice(0, 10),
-    customer: {
-      name: order.customerName.trim() || order.tableLabel || "Walk-in Customer",
-      phone: order.customerPhone.trim(),
-      address: "",
-    },
-    items,
-    discount: order.discount,
-    delivery: order.delivery,
-    payment: order.payment,
-    notes: order.note.trim(),
-    subtotal: order.subtotal,
-    total: order.total,
-  };
-}

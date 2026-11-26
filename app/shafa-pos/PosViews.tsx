@@ -54,7 +54,7 @@ export default function PosViews({
         <div className={s.panelCard}>
           <h3>Cafe POS Overview</h3>
           <p className={s.panelSub}>
-            Billing is live and connected to your dessert catalog and PDF/WhatsApp invoicing. Full analytics charts will expand here next.
+            Billing is live and connected to your dessert catalog. Full analytics charts will expand here next.
           </p>
           <button type="button" className={s.chargeBtn} style={{ maxWidth: 240 }} onClick={onGoToBilling}>
             Open Billing POS →
@@ -114,11 +114,11 @@ export default function PosViews({
                 <div key={ord.id} className={s.orderRow}>
                   <div>
                     <strong>
-                      {ord.billNumber} · {ord.tableLabel}
+                      {ord.customerName.trim() || "Walk-in Customer"} · {ord.tableLabel}
                     </strong>
                     <div style={{ fontSize: "0.78rem", color: "var(--pos-choc-muted)" }}>
+                      {ord.customerPhone.trim() || "No phone"} ·{" "}
                       {ord.lines.reduce((a, l) => a + l.qty, 0)} items · {ord.payment}
-                      {ord.customerName ? ` · ${ord.customerName}` : ""}
                     </div>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -188,7 +188,7 @@ export default function PosViews({
     },
     settings: {
       title: "POS Settings",
-      desc: "Shop profile, invoice numbering, and tax/packaging defaults for Shafa's Dessert House.",
+      desc: "Shop profile, tax/packaging defaults, and customer details for Shafa's Dessert House.",
     },
   };
 
