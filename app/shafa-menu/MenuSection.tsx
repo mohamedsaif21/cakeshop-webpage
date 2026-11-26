@@ -1,236 +1,485 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
+import CartOrderSheet from "./CartOrderSheet";
+import ProductCustomizerSheet from "./ProductCustomizerSheet";
 import s from "./MenuSection.module.css";
+import {
+  CATEGORY_CARDS,
+  DEFAULT_CUSTOMIZATION,
+  INSTAGRAM,
+  ITEMS,
+  LOGO_SRC,
+  MAX_ITEM_QTY,
+  PREFS_STORAGE_KEY,
+  STORAGE_KEY,
+  WHATSAPP_NUMBER,
+  buildWhatsAppOrderText,
+  hasCustomPrefs,
+  inr,
+  type CartLine,
+  type FilterTab,
+  type ItemCustomization,
+  type MenuItem,
+  type Size,
+} from "./menuData";
 
-/* ====== EDIT THESE ====== */
-const WHATSAPP_NUMBER = "91XXXXXXXXXX"; // country code + number, digits only
-const INSTAGRAM = "shafasdesserthouse";
-const LOGO_SRC = "/shafa-menu/logo.png";
-/* ======================== */
-
-const STORAGE_KEY = "shafa-cart-v1";
-
-type Size = "half" | "full";
-type Cat = "brownies" | "cakes";
-type Item = { id: string; name: string; cat: Cat; half: number; full: number };
-type Line = { key: string; item: Item; size: Size; qty: number; price: number };
-
-const ITEMS: Item[] = [
-  { id: "normal-brownie", name: "Normal Brownie", cat: "brownies", half: 499, full: 999 },
-  { id: "triple-choc-brownies", name: "Triple Chocolate Brownies", cat: "brownies", half: 649, full: 1299 },
-  { id: "blonde-brownies", name: "Blonde Brownies", cat: "brownies", half: 549, full: 1099 },
-  { id: "triple-choc-blondies", name: "Triple Chocolate Blondies", cat: "brownies", half: 699, full: 1399 },
-  { id: "fruits-nuts-brownie", name: "Fruits & Nuts Brownie", cat: "brownies", half: 599, full: 1199 },
-  { id: "nutella-brownies", name: "Nutella Brownies", cat: "brownies", half: 639, full: 1279 },
-  { id: "dream-cake", name: "Dream Cake", cat: "cakes", half: 639, full: 1279 },
-  { id: "red-velvet-cake", name: "Red Velvet Cake", cat: "cakes", half: 399, full: 799 },
-  { id: "black-forest-cake", name: "Black Forest Cake", cat: "cakes", half: 399, full: 749 },
-  { id: "white-forest-cake", name: "White Forest Cake", cat: "cakes", half: 399, full: 749 },
-  { id: "plum-cake", name: "Plum Cake", cat: "cakes", half: 449, full: 849 },
+const SEARCH_SUGGESTIONS = [
+  "Search brownies...",
+  "Find your favourite cake...",
+  "Craving something chocolatey?",
+  "Search dessert treats...",
+  "Try our Dream Cake...",
 ];
 
-const PHOTOS: Record<string, string> = {
-  "normal-brownie": "/assest/Menu Highlights/The Best Brownies Ever.jpeg",
-  "triple-choc-brownies": "/assest/Menu Highlights/Ultimate Triple Layer Brownies Recipe.jpeg",
-  "blonde-brownies": "/assest/Menu Highlights/Haole Brownies AKA Blonde Brownies.jpeg",
-  "triple-choc-blondies": "/assest/Menu Highlights/12 Amazing Brownies That Will Make You Drool.jpeg",
-  "fruits-nuts-brownie": "/assest/Menu Highlights/Bombshell Oreo Brownies.jpeg",
-  "nutella-brownies": "/assest/Menu Highlights/Soft and Gooey Nutella Brownies - Strawberry in the Desert.jpeg",
-  "dream-cake": "/assest/Menu Highlights/Tin Can Chocolate Dream Cake Filipino Recipe.jpeg",
-  "red-velvet-cake": "/assest/Menu Highlights/Red Velvet Cake.jpeg",
-  "white-forest-cake": "/assest/Menu Highlights/White Forest Cake.jpeg",
-};
+function AnimatedSearchPlaceholder() {
+  const [suggestionIdx, setSuggestionIdx] = useState(0);
+  const [suggestionText, setSuggestionText] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
-const TABS: { id: "all" | Cat; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "brownies", label: "Brownies" },
-  { id: "cakes", label: "Cakes" },
-];
+  useEffect(() => {
+    const target = SEARCH_SUGGESTIONS[suggestionIdx];
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setSuggestionText(target);
+      return undefined;
+    }
+    if (!deleting && suggestionText === target) {
+      const pause = window.setTimeout(() => setDeleting(true), 1800);
+      return () => window.clearTimeout(pause);
+    }
+    if (deleting && suggestionText === "") {
+      setDeleting(false);
+      setSuggestionIdx((i) => (i + 1) % SEARCH_SUGGESTIONS.length);
+      return undefined;
+    }
+    const timer = window.setTimeout(
+      () => {
+        setSuggestionText((text) =>
+          deleting ? target.slice(0, text.length - 1) : target.slice(0, text.length + 1)
+        );
+      },
+      deleting ? 45 : 85
+    );
+    return () => window.clearTimeout(timer);
+  }, [suggestionIdx, suggestionText, deleting]);
 
-const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+  return (
+    <span className={s.searchPlaceholder} aria-hidden="true">
+      {suggestionText}
+      <span className={s.searchCaret} />
+    </span>
+  );
+}
 
 export default function MenuSection() {
-  const [tab, setTab] = useState<"all" | Cat>("all");
+  const [tab, setTab] = useState<FilterTab>("all");
+  const [under500Only, setUnder500Only] = useState(false);
+  const [search, setSearch] = useState("");
+
   const [sizes, setSizes] = useState<Record<string, Size>>({});
   const [cart, setCart] = useState<Record<string, number>>({});
+  const [prefsMap, setPrefsMap] = useState<Record<string, ItemCustomization>>({});
   const [loaded, setLoaded] = useState(false);
-  const [open, setOpen] = useState(false);
+
+  const [cartOpen, setCartOpen] = useState(false);
+  const [customizingItem, setCustomizingItem] = useState<MenuItem | null>(null);
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setCart(JSON.parse(raw));
+      const rawCart = localStorage.getItem(STORAGE_KEY);
+      if (rawCart) {
+        const parsed = JSON.parse(rawCart);
+        if (parsed && typeof parsed === "object") setCart(parsed);
+      }
+      const rawPrefs = localStorage.getItem(PREFS_STORAGE_KEY);
+      if (rawPrefs) {
+        const parsedPrefs = JSON.parse(rawPrefs);
+        if (parsedPrefs && typeof parsedPrefs === "object") setPrefsMap(parsedPrefs);
+      }
     } catch {}
     setLoaded(true);
   }, []);
 
   useEffect(() => {
     if (!loaded) return;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); } catch {}
-  }, [cart, loaded]);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+      localStorage.setItem(PREFS_STORAGE_KEY, JSON.stringify(prefsMap));
+    } catch {}
+  }, [cart, prefsMap, loaded]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!cartOpen && !customizingItem) return undefined;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
-  }, [open]);
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [cartOpen, customizingItem]);
 
-  const change = (key: string, d: number) =>
+  const change = useCallback((key: string, d: number) => {
     setCart((c) => {
-      const q = (c[key] || 0) + d;
+      const q = Math.min(MAX_ITEM_QTY, (c[key] || 0) + d);
       const n = { ...c };
-      if (q <= 0) delete n[key]; else n[key] = q;
+      if (q <= 0) {
+        delete n[key];
+        setPrefsMap((prev) => {
+          if (!prev[key]) return prev;
+          const next = { ...prev };
+          delete next[key];
+          return next;
+        });
+      } else {
+        n[key] = q;
+      }
       return n;
     });
+  }, []);
 
-  const lines = useMemo<Line[]>(
+  const saveCustomizedItem = useCallback((key: string, qty: number, prefs: ItemCustomization) => {
+    const safeQty = Math.min(MAX_ITEM_QTY, Math.max(1, qty));
+    setCart((c) => ({ ...c, [key]: safeQty }));
+    setPrefsMap((prev) => {
+      const next = { ...prev };
+      if (hasCustomPrefs(prefs)) next[key] = prefs;
+      else delete next[key];
+      return next;
+    });
+  }, []);
+
+  const clearAll = useCallback(() => {
+    setCart({});
+    setPrefsMap({});
+  }, []);
+
+  const cartQtyForKey = useCallback((key: string) => cart[key] || 0, [cart]);
+  const getPrefsForKey = useCallback(
+    (key: string) => prefsMap[key] ?? DEFAULT_CUSTOMIZATION,
+    [prefsMap]
+  );
+
+  const lines = useMemo<CartLine[]>(
     () =>
       Object.entries(cart).flatMap(([key, qty]) => {
         const [id, size] = key.split("|") as [string, Size];
         const item = ITEMS.find((i) => i.id === id);
-        return item ? [{ key, item, size, qty, price: item[size] }] : [];
+        if (!item || (size !== "half" && size !== "full")) return [];
+        return [{ key, item, size, qty, price: item[size], prefs: prefsMap[key] ?? DEFAULT_CUSTOMIZATION }];
       }),
-    [cart]
+    [cart, prefsMap]
   );
+
   const count = lines.reduce((a, l) => a + l.qty, 0);
   const total = lines.reduce((a, l) => a + l.qty * l.price, 0);
-  const visible = ITEMS.filter((i) => tab === "all" || i.cat === tab);
+  const showOrderBar = count > 0 && !cartOpen && !customizingItem;
+
+  const visible = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    const filtered = ITEMS.filter((item) => {
+      if (tab === "blondies" && !item.isBlondie) return false;
+      if ((tab === "brownies" || tab === "cakes") && item.cat !== tab) return false;
+      if (under500Only && item.half >= 500) return false;
+      if (q) {
+        const hay = `${item.name} ${item.cat}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+
+    return filtered;
+  }, [tab, under500Only, search]);
 
   const sendOrder = () => {
     if (!lines.length) return;
-    const body = lines
-      .map((l, i) => `${i + 1}. ${l.item.name} (${l.size === "half" ? "Half" : "Full"}) × ${l.qty} = ${inr(l.qty * l.price)}`)
-      .join("\n");
-    const msg =
-      `*New Order – Shafa's Dessert House*\n\n${body}\n\n*Total: ${inr(total)}*` +
-      (name.trim() ? `\n\nName: ${name.trim()}` : "") +
-      (note.trim() ? `\nNote: ${note.trim()}` : "");
+    const msg = buildWhatsAppOrderText(lines, total, name, note);
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
   };
 
+  const resetFilters = () => {
+    setTab("all");
+    setUnder500Only(false);
+    setSearch("");
+  };
+
+  const activeCategoryLabel =
+    CATEGORY_CARDS.find((c) => c.id === tab)?.label ?? "All Treats";
+
   return (
-    <div className={s.root}>
-      <header className={s.header}>
-        <div className={s.brand}>
-          <Image src={LOGO_SRC} alt="Shafa's Dessert House" width={44} height={44} className={s.brandLogo} />
-          <span>Shafa’s Dessert House</span>
+    <div className={`${s.root} ${showOrderBar ? s.rootWithBar : ""}`}>
+      {/* Sticky Top Header Bar */}
+      <header className={s.topBar}>
+        <div className={`shafa-container ${s.topBarInner}`}>
+          <div className={s.brand}>
+            <Image src={LOGO_SRC} alt="Shafa's Dessert House" width={40} height={40} className={s.brandLogo} />
+            <div className={s.brandText}>
+              <span className={s.brandName}>Shafa’s Dessert House</span>
+              <span className={s.brandSub}>Digital Menu</span>
+            </div>
+          </div>
+
+          <div className={s.headerActions}>
+            <a
+              href={`https://instagram.com/${INSTAGRAM}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={s.iconBtn}
+              aria-label="Follow us on Instagram"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+          </div>
         </div>
-        <button className={s.cartBtn} onClick={() => setOpen(true)} aria-label={`Open order, ${count} items`}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-            <path d="M6 7h12l-1 12H7L6 7Z" /><path d="M9 7a3 3 0 0 1 6 0" />
-          </svg>
-          {count > 0 && <b key={count} className={s.badge}>{count}</b>}
-        </button>
       </header>
 
-      <section className={s.hero}>
-        <p className={s.eyebrow}>Homemade · Made with love</p>
-        <h2>Our Sweet Menu</h2>
-        <p className={s.sub}>Pick Half or Full, add to your order, and send it to us on WhatsApp.</p>
+      {/* Integrated Dark Search Shell */}
+      <div className={s.headerShell}>
+        <div className={`shafa-container ${s.searchBand}`}>
+          <div className={s.searchInputWrap}>
+            <svg className={s.searchIcon} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <input
+              type="search"
+              className={s.searchInput}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              aria-label="Search desserts"
+            />
+            {!search && <AnimatedSearchPlaceholder />}
+            {search && (
+              <button type="button" className={s.searchClear} onClick={() => setSearch("")} aria-label="Clear search">
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Visual Category Strip */}
+      <section className={s.categorySection} aria-label="Dessert categories">
+        <div className="shafa-container">
+          <div className={s.sectionTopRow}>
+            <h2 className={s.sectionHeading}>Categories</h2>
+            {tab !== "all" && (
+              <button type="button" className={s.sectionLink} onClick={() => setTab("all")}>
+                See all
+              </button>
+            )}
+          </div>
+
+          <div className={s.catRail}>
+            {CATEGORY_CARDS.map((cat) => {
+              const active = tab === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  className={`${s.catTile} ${active ? s.catTileActive : ""}`}
+                  aria-pressed={active}
+                  onClick={() => setTab(cat.id)}
+                >
+                  <span className={s.catThumb}>
+                    <Image src={cat.photo} alt="" fill sizes="54px" className={s.catThumbImg} />
+                  </span>
+                  <span className={s.catLabel}>{cat.label}</span>
+                  <span className={s.catCount}>{cat.count}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
-      <nav className={s.tabs} aria-label="Categories">
-        {TABS.map((t) => (
-          <button key={t.id} className={`${s.tab} ${tab === t.id ? s.tabOn : ""}`} onClick={() => setTab(t.id)}>
-            {t.label}
-          </button>
-        ))}
+      {/* Sticky Category Filter Bar */}
+      <nav className={s.filterSticky} aria-label="Filter menu">
+        <div className="shafa-container">
+          <div className={s.filterRow}>
+            <div className={s.pillGroup}>
+              {CATEGORY_CARDS.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  className={`${s.filterPill} ${tab === c.id ? s.filterPillActive : ""}`}
+                  aria-pressed={tab === c.id}
+                  onClick={() => setTab(c.id)}
+                >
+                  {c.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                className={`${s.filterPill} ${under500Only ? s.filterPillActive : ""}`}
+                aria-pressed={under500Only}
+                onClick={() => setUnder500Only((v) => !v)}
+              >
+                Under ₹500
+              </button>
+            </div>
+          </div>
+        </div>
       </nav>
 
-      <main className={s.grid}>
-        {visible.map((item, idx) => {
-          const size = sizes[item.id] ?? "half";
-          const key = `${item.id}|${size}`;
-          const qty = cart[key] || 0;
-          return (
-            <article key={item.id} className={s.card} style={{ "--i": idx } as React.CSSProperties}>
-              <div className={s.thumb} aria-hidden>
-                {PHOTOS[item.id] ? (
-                  <Image src={PHOTOS[item.id]} alt="" fill sizes="(max-width: 380px) 64px, 84px" className={s.thumbImage} />
-                ) : (
-                  item.cat === "cakes" ? "🍰" : "🍫"
-                )}
-              </div>
-              <div className={s.info}>
-                <h3>{item.name}</h3>
-                <div className={s.seg} role="group" aria-label={`${item.name} size`}>
-                  {(["half", "full"] as Size[]).map((z) => (
-                    <button key={z} className={size === z ? s.segOn : ""} onClick={() => setSizes((p) => ({ ...p, [item.id]: z }))}>
-                      {z === "half" ? "Half" : "Full"}
-                    </button>
-                  ))}
-                </div>
-                <div className={s.row}>
-                  <span className={s.price}>{inr(item[size])}</span>
-                  {qty === 0 ? (
-                    <button className={s.add} onClick={() => change(key, 1)}>Add +</button>
-                  ) : (
-                    <div className={s.step}>
-                      <button onClick={() => change(key, -1)} aria-label="Decrease">−</button>
-                      <span>{qty}</span>
-                      <button onClick={() => change(key, 1)} aria-label="Increase">+</button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </article>
-          );
-        })}
-      </main>
+      {/* Menu Grid */}
+      <section className={s.menuSection} aria-label="Menu items">
+        <div className="shafa-container">
+          <div className={s.sectionTopRow}>
+            <h2 className={s.sectionHeading}>{activeCategoryLabel}</h2>
+            <span className={s.menuHeaderMeta}>
+              {visible.length} {visible.length === 1 ? "item" : "items"}
+            </span>
+          </div>
 
-      <footer className={s.footer}>
-        <a href={`https://instagram.com/${INSTAGRAM}`} target="_blank" rel="noopener noreferrer">@{INSTAGRAM}</a>
+          {visible.length === 0 ? (
+            <div className={s.emptyResults}>
+              <h3>No matching desserts</h3>
+              <button type="button" className={s.resetBtn} onClick={resetFilters}>
+                Show all treats
+              </button>
+            </div>
+          ) : (
+            <div className={s.grid}>
+              {visible.map((item, idx) => {
+                const size = sizes[item.id] ?? "half";
+                const key = `${item.id}|${size}`;
+                const qty = cart[key] || 0;
+
+                return (
+                  <article key={item.id} className={s.card} style={{ "--i": idx } as CSSProperties}>
+                    <button
+                      type="button"
+                      className={s.cardMediaBtn}
+                      onClick={() => setCustomizingItem(item)}
+                      aria-label={`Customize ${item.name}`}
+                    >
+                      {item.photo ? (
+                        <Image
+                          src={item.photo}
+                          alt={item.name}
+                          fill
+                          sizes="(max-width: 639px) 50vw, (max-width: 1099px) 33vw, 25vw"
+                          className={s.cardImg}
+                        />
+                      ) : (
+                        <div className={s.placeholderArt}>
+                          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+                            <path d="M4 14h16v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5Z" />
+                            <path d="M4 14c0-2 2-3 4-3 1.5 0 2.5 1 4 1s2.5-1 4-1c2 0 4 1 4 3" />
+                            <path d="M12 7v4M12 3a1.5 1.5 0 0 1 1.5 1.5c0 .9-1.5 2.5-1.5 2.5s-1.5-1.6-1.5-2.5A1.5 1.5 0 0 1 12 3Z" />
+                          </svg>
+                        </div>
+                      )}
+                    </button>
+
+                    <div className={s.cardBody}>
+                      <button type="button" className={s.cardTitleBtn} onClick={() => setCustomizingItem(item)}>
+                        <h3 className={s.cardTitle}>{item.name}</h3>
+                      </button>
+
+                      <div className={s.seg} role="group" aria-label={`${item.name} size`}>
+                        {(["half", "full"] as Size[]).map((z) => (
+                          <button
+                            key={z}
+                            type="button"
+                            className={size === z ? s.segOn : ""}
+                            aria-pressed={size === z}
+                            onClick={() => setSizes((p) => ({ ...p, [item.id]: z }))}
+                          >
+                            {z === "half" ? "Half" : "Full"}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className={s.cardFoot}>
+                        <div className={s.priceWrap}>
+                          <span className={s.price}>{inr(item[size])}</span>
+                          <span className={s.priceUnit}>{size === "half" ? "Half" : "Full"}</span>
+                        </div>
+
+                        {qty === 0 ? (
+                          <button
+                            type="button"
+                            className={s.quickAdd}
+                            onClick={() => change(key, 1)}
+                            aria-label={`Add ${item.name} (${size})`}
+                          >
+                            +
+                          </button>
+                        ) : (
+                          <div className={s.step}>
+                            <button type="button" onClick={() => change(key, -1)} aria-label="Decrease">
+                              −
+                            </button>
+                            <span>{qty}</span>
+                            <button type="button" onClick={() => change(key, 1)} aria-label="Increase">
+                              +
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <footer className={`shafa-container ${s.footer}`}>
+        <div className={s.footerBrand}>
+          <Image src={LOGO_SRC} alt="" width={26} height={26} className={s.footerLogo} />
+          <span>Shafa’s Dessert House</span>
+        </div>
+        <div className={s.footerLinks}>
+          <a href={`https://instagram.com/${INSTAGRAM}`} target="_blank" rel="noopener noreferrer">
+            @{INSTAGRAM}
+          </a>
+          <Link href="/">Full Website →</Link>
+        </div>
       </footer>
 
-      {count > 0 && !open && (
-        <button className={s.bar} onClick={() => setOpen(true)}>
-          <span>{count} item{count > 1 ? "s" : ""} · {inr(total)}</span>
-          <span>View order →</span>
-        </button>
+      <button
+        type="button"
+        className={`${s.bar} ${showOrderBar ? s.barVisible : ""}`}
+        onClick={() => setCartOpen(true)}
+        tabIndex={showOrderBar ? 0 : -1}
+        aria-hidden={!showOrderBar}
+      >
+        View Order
+      </button>
+
+      {customizingItem && (
+        <ProductCustomizerSheet
+          item={customizingItem}
+          initialSize={sizes[customizingItem.id] ?? "half"}
+          cartQtyForKey={cartQtyForKey}
+          getPrefsForKey={getPrefsForKey}
+          onClose={() => setCustomizingItem(null)}
+          onSaveItem={saveCustomizedItem}
+        />
       )}
 
-      {open && (
-        <div className={s.overlay} onClick={() => setOpen(false)}>
-          <section className={s.sheet} role="dialog" aria-label="Your order" onClick={(e) => e.stopPropagation()}>
-            <div className={s.grab} />
-            <div className={s.sheetHead}>
-              <h3>Your Order</h3>
-              <button onClick={() => setOpen(false)} aria-label="Close">✕</button>
-            </div>
-
-            {lines.length === 0 ? (
-              <p className={s.empty}>Your order list is empty. Add something sweet 🍫</p>
-            ) : (
-              <>
-                <ul className={s.lines}>
-                  {lines.map((l) => (
-                    <li key={l.key}>
-                      <div>
-                        <strong>{l.item.name}</strong>
-                        <small>{l.size === "half" ? "Half" : "Full"} · {inr(l.price)}</small>
-                      </div>
-                      <div className={s.step}>
-                        <button onClick={() => change(l.key, -1)} aria-label="Decrease">−</button>
-                        <span>{l.qty}</span>
-                        <button onClick={() => change(l.key, 1)} aria-label="Increase">+</button>
-                      </div>
-                      <b className={s.lineTotal}>{inr(l.qty * l.price)}</b>
-                    </li>
-                  ))}
-                </ul>
-                <input className={s.field} placeholder="Your name (optional)" value={name} onChange={(e) => setName(e.target.value)} />
-                <textarea className={s.field} rows={2} placeholder="Note (e.g. no nuts, birthday message)" value={note} onChange={(e) => setNote(e.target.value)} />
-                <div className={s.totalRow}><span>Total</span><b>{inr(total)}</b></div>
-                <button className={s.send} onClick={sendOrder}>Send order on WhatsApp</button>
-                <button className={s.clear} onClick={() => setCart({})}>Clear order</button>
-              </>
-            )}
-          </section>
-        </div>
+      {cartOpen && (
+        <CartOrderSheet
+          lines={lines}
+          total={total}
+          name={name}
+          note={note}
+          onNameChange={setName}
+          onNoteChange={setNote}
+          onChangeQty={change}
+          onSendOrder={sendOrder}
+          onClearCart={clearAll}
+          onClose={() => setCartOpen(false)}
+        />
       )}
     </div>
   );
