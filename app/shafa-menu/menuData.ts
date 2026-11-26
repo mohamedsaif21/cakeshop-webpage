@@ -236,47 +236,28 @@ export const CATEGORY_CARDS: CategoryCard[] = [
   },
 ];
 
-export type PromoSlide = {
+export type PromoPoster = {
   id: string;
-  eyebrow: string;
-  title: string;
-  subtitle: string;
-  cta: string;
-  itemId: string;
+  alt: string;
   photo: string;
-  tag: string;
 };
 
-export const PROMO_SLIDES: PromoSlide[] = [
+// Replace these three paths with the final promotional poster images when provided.
+export const PROMO_POSTERS: PromoPoster[] = [
   {
-    id: "dream-cake",
-    eyebrow: "Baked Fresh · 100% Eggless Available",
-    title: "5-Layer Chocolate Dream Cake",
-    subtitle: "Crack through the crisp chocolate shell into velvety mousse, fudge, and moist sponge.",
-    cta: "Customize Dream Cake",
-    itemId: "dream-cake",
+    id: "poster-1",
+    alt: "Shafa's Dessert House featured chocolate dream cake poster",
     photo: "/assest/Menu Highlights/Tin Can Chocolate Dream Cake Filipino Recipe.jpeg",
-    tag: "From ₹639",
   },
   {
-    id: "nutella",
-    eyebrow: "Bestseller · Small-Batch Crafted",
-    title: "Molten Nutella Swirl Brownies",
-    subtitle: "Deep cocoa fudginess swirled with warm hazelnut cream. Available in Half & Full boxes.",
-    cta: "Customize Brownies",
-    itemId: "nutella-brownies",
+    id: "poster-2",
+    alt: "Shafa's Dessert House featured Nutella brownies poster",
     photo: "/assest/Menu Highlights/Soft and Gooey Nutella Brownies - Strawberry in the Desert.jpeg",
-    tag: "From ₹639",
   },
   {
-    id: "triple-choc",
-    eyebrow: "Gift Ready · Complimentary Ribbon & Card",
-    title: "Triple Chocolate Layers",
-    subtitle: "Dark, milk, and white chocolate balanced for celebrations and thoughtful gifting.",
-    cta: "View Triple Choc",
-    itemId: "triple-choc-brownies",
+    id: "poster-3",
+    alt: "Shafa's Dessert House featured triple chocolate brownies poster",
     photo: "/assest/Menu Highlights/Ultimate Triple Layer Brownies Recipe.jpeg",
-    tag: "From ₹649",
   },
 ];
 
