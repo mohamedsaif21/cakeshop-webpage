@@ -1,17 +1,13 @@
 "use client";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { buildInvoicePdf } from "@/lib/invoice/pdf";
-import { inr, isValidPhone } from "@/lib/invoice/format";
-import { downloadBlob, invoiceMessage, whatsappLink } from "@/lib/invoice/whatsapp";
-import { PHONE } from "@/lib/whatsapp";
+import { inr } from "@/lib/invoice/format";
 import s from "./PosApp.module.css";
 import {
   PAYMENT_METHODS,
   POS_CATEGORIES,
   POS_PRODUCTS,
   TABLE_OPTIONS,
-  orderToInvoice,
   type BillLine,
   type PaymentMethod,
   type PosCategory,
@@ -22,7 +18,6 @@ import {
 
 type Props = {
   search: string;
-  billNumber: string;
   tableLabel: string;
   onTableChange: (table: string) => void;
   lines: BillLine[];
@@ -52,7 +47,6 @@ const parseAmount = (v: string) => {
 
 export default function BillingWorkspace({
   search,
-  billNumber,
   tableLabel,
   onTableChange,
   lines,
@@ -77,10 +71,8 @@ export default function BillingWorkspace({
   const [cat, setCat] = useState<PosCategory>("all");
   const [sizeFilter, setSizeFilter] = useState<"all" | PosSize>("all");
   const [cardSizes, setCardSizes] = useState<Record<string, PosSize>>({});
-  const [showExtras, setShowExtras] = useState(false);
   const [mobileBillOpen, setMobileBillOpen] = useState(false);
   const [receiptOrder, setReceiptOrder] = useState<PosOrderRecord | null>(null);
-  const [pdfBusy, setPdfBusy] = useState(false);
 
   const visibleProducts = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -112,28 +104,6 @@ export default function BillingWorkspace({
     if (!lines.length) return;
     onCompleteOrder("draft");
     setMobileBillOpen(false);
-  };
-
-  const handleDownloadPdf = async () => {
-    if (!receiptOrder) return;
-    setPdfBusy(true);
-    try {
-      const inv = orderToInvoice(receiptOrder);
-      const blob = await buildInvoicePdf(inv);
-      const safeName = inv.customer.name.replace(/\s+/g, "-") || "bill";
-      downloadBlob(blob, `${inv.number}-${safeName}.pdf`);
-    } finally {
-      setPdfBusy(false);
-    }
-  };
-
-  const handleSendWhatsApp = () => {
-    if (!receiptOrder) return;
-    const inv = orderToInvoice(receiptOrder);
-    const targetPhone = isValidPhone(receiptOrder.customerPhone)
-      ? receiptOrder.customerPhone
-      : PHONE;
-    window.open(whatsappLink(targetPhone, invoiceMessage(inv)), "_blank", "noopener");
   };
 
   return (
@@ -300,7 +270,7 @@ export default function BillingWorkspace({
           {lines.length === 0 ? (
             <div className={s.billEmpty}>
               <strong>No items billed yet</strong>
-              <span>Tap any brownie or cake on the left to add it to {billNumber}.</span>
+              <span>Tap any brownie or cake on the left to add it to this bill.</span>
             </div>
           ) : (
             lines.map((line) => (
@@ -357,42 +327,31 @@ export default function BillingWorkspace({
         </div>
 
         <div className={s.billExtras}>
-          <button
-            type="button"
-            className={s.noteToggleBtn}
-            onClick={() => setShowExtras((v) => !v)}
-          >
-            {showExtras ? "− Hide Customer & Note" : "+ Add Customer / Note"}
-          </button>
-
-          {showExtras && (
-            <>
-              <div className={s.customerGrid}>
-                <input
-                  className={s.miniInput}
-                  placeholder="Customer name"
-                  value={customerName}
-                  onChange={(e) => onCustomerNameChange(e.target.value)}
-                  aria-label="Customer name"
-                />
-                <input
-                  className={s.miniInput}
-                  placeholder="WhatsApp number"
-                  inputMode="numeric"
-                  value={customerPhone}
-                  onChange={(e) => onCustomerPhoneChange(e.target.value)}
-                  aria-label="Customer WhatsApp number"
-                />
-              </div>
-              <input
-                className={s.miniInput}
-                placeholder="Order note (e.g. 100% Eggless, gift ribbon)"
-                value={note}
-                onChange={(e) => onNoteChange(e.target.value)}
-                aria-label="Order note"
-              />
-            </>
-          )}
+          <strong className={s.customerTitle}>Customer details</strong>
+          <div className={s.customerGrid}>
+            <input
+              className={s.miniInput}
+              placeholder="Customer name"
+              value={customerName}
+              onChange={(e) => onCustomerNameChange(e.target.value)}
+              aria-label="Customer name"
+            />
+            <input
+              className={s.miniInput}
+              placeholder="WhatsApp number"
+              inputMode="numeric"
+              value={customerPhone}
+              onChange={(e) => onCustomerPhoneChange(e.target.value)}
+              aria-label="Customer WhatsApp number"
+            />
+          </div>
+          <input
+            className={s.miniInput}
+            placeholder="Order note (e.g. 100% Eggless, gift ribbon)"
+            value={note}
+            onChange={(e) => onNoteChange(e.target.value)}
+            aria-label="Order note"
+          />
         </div>
 
         <div className={s.billSummary}>
@@ -419,10 +378,6 @@ export default function BillingWorkspace({
             </label>
           </div>
 
-          <div className={s.sumLine}>
-            <span>Subtotal ({itemCount})</span>
-            <span>{inr(subtotal)}</span>
-          </div>
           {discountVal > 0 && (
             <div className={s.sumLine}>
               <span>Discount</span>
@@ -491,7 +446,7 @@ export default function BillingWorkspace({
         <div className={s.modalOverlay} onClick={() => setReceiptOrder(null)}>
           <div className={s.modalCard} role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
             <div className={s.modalHead}>
-              <h3>Bill Charged · {receiptOrder.billNumber}</h3>
+              <h3>Bill Charged</h3>
               <button
                 type="button"
                 className={s.closeMobileBill}
@@ -502,21 +457,12 @@ export default function BillingWorkspace({
               </button>
             </div>
             <p className={s.panelSub}>
+              {receiptOrder.customerName.trim() || "Walk-in Customer"}
+              {receiptOrder.customerPhone.trim() ? ` · ${receiptOrder.customerPhone.trim()}` : ""} ·{" "}
               {receiptOrder.tableLabel} · Paid via {receiptOrder.payment} ·{" "}
               <strong>{inr(receiptOrder.total)}</strong>
             </p>
-            <button
-              type="button"
-              className={s.chargeBtn}
-              disabled={pdfBusy}
-              onClick={handleDownloadPdf}
-            >
-              {pdfBusy ? "Generating PDF…" : "Download PDF Invoice"}
-            </button>
-            <button type="button" className={s.waBtn} onClick={handleSendWhatsApp}>
-              Send Receipt on WhatsApp
-            </button>
-            <button type="button" className={s.draftBtn} onClick={() => setReceiptOrder(null)}>
+            <button type="button" className={s.chargeBtn} onClick={() => setReceiptOrder(null)}>
               Next Bill
             </button>
           </div>

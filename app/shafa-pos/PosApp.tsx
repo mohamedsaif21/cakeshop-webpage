@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { commitInvoiceNumber, peekInvoiceNumber } from "@/lib/invoice/format";
 import BillingWorkspace from "./BillingWorkspace";
 import s from "./PosApp.module.css";
 import PosViews from "./PosViews";
@@ -110,7 +109,6 @@ const parseAmount = (v: string) => {
 export default function PosApp() {
   const [section, setSection] = useState<PosSection>("billing");
   const [search, setSearch] = useState("");
-  const [billNumber, setBillNumber] = useState("SDH-0001");
   const [tableLabel, setTableLabel] = useState("Takeaway");
   const [lines, setLines] = useState<BillLine[]>([]);
   const [discount, setDiscount] = useState("");
@@ -125,7 +123,6 @@ export default function PosApp() {
   const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setBillNumber(peekInvoiceNumber());
     try {
       const rawOrders = localStorage.getItem(POS_ORDERS_KEY);
       if (rawOrders) setOrders(JSON.parse(rawOrders));
@@ -222,7 +219,6 @@ export default function PosApp() {
 
       const record: PosOrderRecord = {
         id: `${Date.now()}`,
-        billNumber,
         createdAt: new Date().toISOString(),
         status,
         tableLabel,
@@ -238,14 +234,10 @@ export default function PosApp() {
       };
 
       setOrders((prev) => [record, ...prev]);
-      if (status === "charged") {
-        commitInvoiceNumber();
-        setBillNumber(peekInvoiceNumber());
-      }
       resetOrder();
       return record;
     },
-    [lines, discount, delivery, billNumber, tableLabel, payment, customerName, customerPhone, note, resetOrder]
+    [lines, discount, delivery, tableLabel, payment, customerName, customerPhone, note, resetOrder]
   );
 
   const resumeDraft = useCallback((draft: PosOrderRecord) => {
@@ -326,7 +318,6 @@ export default function PosApp() {
           <header className={s.topBar}>
             <div className={s.topLeft}>
               <h1 className={s.pageTitle}>{activeTitle}</h1>
-              <span className={s.billTag}>{billNumber}</span>
             </div>
 
             <div className={s.globalSearchWrap}>
@@ -381,7 +372,6 @@ export default function PosApp() {
           {section === "billing" ? (
             <BillingWorkspace
               search={search}
-              billNumber={billNumber}
               tableLabel={tableLabel}
               onTableChange={setTableLabel}
               lines={lines}
