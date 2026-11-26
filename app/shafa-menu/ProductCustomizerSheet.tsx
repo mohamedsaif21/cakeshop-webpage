@@ -61,41 +61,47 @@ export default function ProductCustomizerSheet({
   return (
     <div className={s.overlay} onClick={onClose}>
       <section
-        className={s.sheet}
+        className={`${s.sheet} ${s.czSheet}`}
         role="dialog"
         aria-modal="true"
         aria-label={`Customize ${item.name}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <header className={s.sheetDarkHead}>
-          <div className={s.sheetTopRow}>
-            <button type="button" className={s.sheetIconBtn} onClick={onClose} aria-label="Back to menu">
+        <header className={s.czHead}>
+          <div className={s.czTopRow}>
+            <button type="button" className={s.czIconBtn} onClick={onClose} aria-label="Back to menu">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
-            <span className={s.sheetTitleCenter}>Customize Treat</span>
-            <button type="button" className={s.sheetIconBtn} onClick={onClose} aria-label="Close">
-              ✕
+            <span className={s.czHeadTitle}>Customize Treat</span>
+            <button type="button" className={s.czIconBtn} onClick={onClose} aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
             </button>
           </div>
 
-          <div className={s.detailHeroRow}>
-            <div>
-              <span className={s.detailKicker}>{item.cat === "cakes" ? "Artisanal Cake" : "Handcrafted Brownie"}</span>
-              <h3 className={s.detailName}>{item.name}</h3>
+          <div className={s.czHero}>
+            <div className={s.czHeroText}>
+              <span className={s.czKicker}>
+                {item.cat === "cakes" ? "Artisanal Cake" : "Handcrafted Brownie"}
+              </span>
+              <h3 className={s.czProductName}>{item.name}</h3>
             </div>
-            <div className={s.step} role="group" aria-label={`Quantity for ${item.name}`}>
+            <div className={s.czStepper} role="group" aria-label={`Quantity for ${item.name}`}>
               <button
                 type="button"
+                className={s.czStepBtn}
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 aria-label="Decrease quantity"
               >
                 −
               </button>
-              <span>{qty}</span>
+              <span className={s.czStepValue}>{qty}</span>
               <button
                 type="button"
+                className={s.czStepBtn}
                 onClick={() => setQty((q) => Math.min(MAX_ITEM_QTY, q + 1))}
                 aria-label="Increase quantity"
               >
@@ -105,10 +111,10 @@ export default function ProductCustomizerSheet({
           </div>
         </header>
 
-        <div className={s.sheetScroll}>
-          <div className={s.detailMediaFrame}>
+        <div className={s.czScroll}>
+          <div className={s.czMedia}>
             {item.photo ? (
-              <Image src={item.photo} alt={item.name} fill sizes="260px" className={s.cardImg} />
+              <Image src={item.photo} alt={item.name} fill sizes="(max-width: 640px) 100vw, 620px" className={s.czMediaImg} />
             ) : (
               <div className={s.placeholderArt}>
                 <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -116,92 +122,98 @@ export default function ProductCustomizerSheet({
                   <path d="M4 14c0-2 2-3 4-3 1.5 0 2.5 1 4 1s2.5-1 4-1c2 0 4 1 4 3" />
                   <path d="M12 7v4M12 3a1.5 1.5 0 0 1 1.5 1.5c0 .9-1.5 2.5-1.5 2.5s-1.5-1.6-1.5-2.5A1.5 1.5 0 0 1 12 3Z" />
                 </svg>
-                <span>Freshly Baked</span>
               </div>
             )}
           </div>
 
-          <div>
-            <span className={s.detailSectionLabel}>About this dessert</span>
-            <p className={s.detailAbout}>{item.about}</p>
-          </div>
-
-          <div>
-            <span className={s.detailSectionLabel}>Select Size</span>
-            <div className={s.choiceGrid} role="group" aria-label="Select portion size">
+          <section className={s.czSection} aria-label="Select size">
+            <div className={s.czSectionHead}>
+              <h4 className={s.czSectionTitle}>Select Size</h4>
+              <span className={s.czSectionHint}>Choose one</span>
+            </div>
+            <div className={s.czOptions} role="group" aria-label="Select portion size">
               {(["half", "full"] as Size[]).map((z) => (
                 <button
                   key={z}
                   type="button"
-                  className={`${s.choiceChip} ${size === z ? s.choiceChipActive : ""}`}
+                  className={`${s.czOption} ${size === z ? s.czOptionActive : ""}`}
                   aria-pressed={size === z}
                   onClick={() => setSize(z)}
                 >
-                  <span>{z === "half" ? item.halfLabel : item.fullLabel}</span>
-                  <small>{inr(item[z])}</small>
+                  <span className={s.czOptionName}>{z === "half" ? item.halfLabel : item.fullLabel}</span>
+                  <span className={s.czOptionMeta}>{inr(item[z])}</span>
+                  <span className={s.czOptionTick} aria-hidden="true">✓</span>
                 </button>
               ))}
             </div>
-          </div>
+          </section>
 
-          <div>
-            <span className={s.detailSectionLabel}>Dietary Preference</span>
-            <div className={s.choiceGrid} role="group" aria-label="Dietary preference">
+          <section className={s.czSection} aria-label="Dietary preference">
+            <div className={s.czSectionHead}>
+              <h4 className={s.czSectionTitle}>Dietary Preference</h4>
+              <span className={s.czSectionHint}>Choose one</span>
+            </div>
+            <div className={s.czOptions} role="group" aria-label="Dietary preference">
               {DIETARY_OPTIONS.map((option) => (
                 <button
                   key={option}
                   type="button"
-                  className={`${s.choiceChip} ${prefs.dietary === option ? s.choiceChipActive : ""}`}
+                  className={`${s.czOption} ${prefs.dietary === option ? s.czOptionActive : ""}`}
                   aria-pressed={prefs.dietary === option}
                   onClick={() => setPrefs((p) => ({ ...p, dietary: option }))}
                 >
-                  <span>{option}</span>
-                  <small>{option === "100% Eggless" ? "Veg" : "Classic"}</small>
+                  <span className={s.czOptionName}>{option}</span>
+                  <span className={s.czOptionMeta}>{option === "100% Eggless" ? "Veg" : "Classic"}</span>
+                  <span className={s.czOptionTick} aria-hidden="true">✓</span>
                 </button>
               ))}
             </div>
-          </div>
+          </section>
 
-          <div>
-            <span className={s.detailSectionLabel}>Presentation &amp; Gifting</span>
-            <div className={s.choiceGrid} role="group" aria-label="Presentation option">
+          <section className={s.czSection} aria-label="Presentation and gifting">
+            <div className={s.czSectionHead}>
+              <h4 className={s.czSectionTitle}>Presentation &amp; Gifting</h4>
+              <span className={s.czSectionHint}>Choose one</span>
+            </div>
+            <div className={s.czOptions} role="group" aria-label="Presentation option">
               {PACKAGING_OPTIONS.map((option) => (
                 <button
                   key={option}
                   type="button"
-                  className={`${s.choiceChip} ${prefs.packaging === option ? s.choiceChipActive : ""}`}
+                  className={`${s.czOption} ${prefs.packaging === option ? s.czOptionActive : ""}`}
                   aria-pressed={prefs.packaging === option}
                   onClick={() => setPrefs((p) => ({ ...p, packaging: option }))}
                 >
-                  <span>{option}</span>
-                  <small>{option === "Gift Ribbon & Card" ? "Complimentary" : "Standard"}</small>
+                  <span className={s.czOptionName}>{option}</span>
+                  <span className={s.czOptionMeta}>{option === "Gift Ribbon & Card" ? "Complimentary" : "Standard"}</span>
+                  <span className={s.czOptionTick} aria-hidden="true">✓</span>
                 </button>
               ))}
             </div>
-          </div>
+          </section>
 
-          <div>
-            <label htmlFor="custom-item-note" className={s.detailSectionLabel}>
+          <section className={s.czSection} aria-label="Special request">
+            <label htmlFor="custom-item-note" className={s.czSectionTitle}>
               Special Request for this Treat (optional)
             </label>
             <input
               id="custom-item-note"
-              className={s.field}
+              className={s.czNoteInput}
               placeholder="e.g. No nuts, Happy Birthday message, extra ribbon"
               value={prefs.itemNote}
               onChange={(e) => setPrefs((p) => ({ ...p, itemNote: e.target.value }))}
             />
-          </div>
+          </section>
         </div>
 
-        <footer className={s.sheetFooter}>
-          <div>
-            <span className={s.sheetTotalLabel}>
+        <footer className={s.czFooter}>
+          <div className={s.czTotal}>
+            <span className={s.czTotalLabel}>
               {size === "half" ? "Half" : "Full"} · {qty} × {inr(unitPrice)}
             </span>
-            <strong className={s.sheetTotalPrice}>{inr(lineTotal)}</strong>
+            <strong className={s.czTotalPrice}>{inr(lineTotal)}</strong>
           </div>
-          <button type="button" className={s.sheetPrimaryBtn} onClick={handleConfirm}>
+          <button type="button" className={s.czAddBtn} onClick={handleConfirm}>
             {existingQty > 0 ? "Update Order" : "Add to Order"} · {inr(lineTotal)}
           </button>
         </footer>
