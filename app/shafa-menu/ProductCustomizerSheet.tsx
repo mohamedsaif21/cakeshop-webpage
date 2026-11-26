@@ -5,7 +5,6 @@ import s from "./MenuSection.module.css";
 import {
   DIETARY_OPTIONS,
   MAX_ITEM_QTY,
-  PACKAGING_OPTIONS,
   inr,
   type ItemCustomization,
   type MenuItem,
@@ -69,11 +68,6 @@ export default function ProductCustomizerSheet({
       >
         <header className={s.czHead}>
           <div className={s.czTopRow}>
-            <button type="button" className={s.czIconBtn} onClick={onClose} aria-label="Back to menu">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
             <span className={s.czHeadTitle}>Customize Treat</span>
             <button type="button" className={s.czIconBtn} onClick={onClose} aria-label="Close">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
@@ -84,9 +78,6 @@ export default function ProductCustomizerSheet({
 
           <div className={s.czHero}>
             <div className={s.czHeroText}>
-              <span className={s.czKicker}>
-                {item.cat === "cakes" ? "Artisanal Cake" : "Handcrafted Brownie"}
-              </span>
               <h3 className={s.czProductName}>{item.name}</h3>
             </div>
             <div className={s.czStepper} role="group" aria-label={`Quantity for ${item.name}`}>
@@ -127,10 +118,7 @@ export default function ProductCustomizerSheet({
           </div>
 
           <section className={s.czSection} aria-label="Select size">
-            <div className={s.czSectionHead}>
-              <h4 className={s.czSectionTitle}>Select Size</h4>
-              <span className={s.czSectionHint}>Choose one</span>
-            </div>
+            <h4 className={s.czSectionTitle}>Select Size</h4>
             <div className={s.czOptions} role="group" aria-label="Select portion size">
               {(["half", "full"] as Size[]).map((z) => (
                 <button
@@ -149,10 +137,7 @@ export default function ProductCustomizerSheet({
           </section>
 
           <section className={s.czSection} aria-label="Dietary preference">
-            <div className={s.czSectionHead}>
-              <h4 className={s.czSectionTitle}>Dietary Preference</h4>
-              <span className={s.czSectionHint}>Choose one</span>
-            </div>
+            <h4 className={s.czSectionTitle}>Dietary Preference</h4>
             <div className={s.czOptions} role="group" aria-label="Dietary preference">
               {DIETARY_OPTIONS.map((option) => (
                 <button
@@ -170,40 +155,6 @@ export default function ProductCustomizerSheet({
             </div>
           </section>
 
-          <section className={s.czSection} aria-label="Presentation and gifting">
-            <div className={s.czSectionHead}>
-              <h4 className={s.czSectionTitle}>Presentation &amp; Gifting</h4>
-              <span className={s.czSectionHint}>Choose one</span>
-            </div>
-            <div className={s.czOptions} role="group" aria-label="Presentation option">
-              {PACKAGING_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  className={`${s.czOption} ${prefs.packaging === option ? s.czOptionActive : ""}`}
-                  aria-pressed={prefs.packaging === option}
-                  onClick={() => setPrefs((p) => ({ ...p, packaging: option }))}
-                >
-                  <span className={s.czOptionName}>{option}</span>
-                  <span className={s.czOptionMeta}>{option === "Gift Ribbon & Card" ? "Complimentary" : "Standard"}</span>
-                  <span className={s.czOptionTick} aria-hidden="true">✓</span>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className={s.czSection} aria-label="Special request">
-            <label htmlFor="custom-item-note" className={s.czSectionTitle}>
-              Special Request for this Treat (optional)
-            </label>
-            <input
-              id="custom-item-note"
-              className={s.czNoteInput}
-              placeholder="e.g. No nuts, Happy Birthday message, extra ribbon"
-              value={prefs.itemNote}
-              onChange={(e) => setPrefs((p) => ({ ...p, itemNote: e.target.value }))}
-            />
-          </section>
         </div>
 
         <footer className={s.czFooter}>
